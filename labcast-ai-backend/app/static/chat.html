@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LabCast AI - Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --user-bubble: #2563eb;
+            --ai-bubble: rgba(255, 255, 255, 0.1);
+            --error-color: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            /* Nice radial gradient for premium feel */
+            background-image: radial-gradient(circle at top right, #1e1b4b, var(--bg-dark));
+        }
+
+        /* Header */
+        header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 0.02em;
+        }
+
+        .header-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 2px;
+        }
+
+        /* Chat Container */
+        #chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            scroll-behavior: smooth;
+        }
+
+        /* Hide scrollbar for cleaner mobile look */
+        #chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        #chat-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #chat-container::-webkit-scrollbar-thumb {
+            background: var(--glass-border);
+            border-radius: 10px;
+        }
+
+        /* Messages */
+        .message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            animation: fadeIn 0.3s ease-out forwards;
+            word-wrap: break-word;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background-color: var(--user-bubble);
+            color: white;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .message.ai {
+            align-self: flex-start;
+            background: var(--ai-bubble);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.error {
+            align-self: center;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+            font-size: 0.85rem;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .source-snippet {
+            display: block;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Loading Indicator */
+        .typing-indicator {
+            align-self: flex-start;
+            background: var(--ai-bubble);
+            padding: 12px 16px;
+            border-radius: 20px;
+            border-bottom-left-radius: 4px;
+            display: none;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .typing-indicator span {
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-muted);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* Input Area */
+        .input-area {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid var(--glass-border);
+            padding: 12px 16px;
+            padding-bottom: max(12px, env(safe-area-inset-bottom));
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+            position: relative;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 12px 20px;
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        input[type="text"]::placeholder {
+            color: var(--text-muted);
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.1s ease, background 0.2s ease;
+            flex-shrink: 0;
+            outline: none;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        button:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            transform: translateX(1px); /* optical alignment */
+        }
+
+        /* Full page overlay for initial loading / fatal error */
+        #overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-dark);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #overlay-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Full screen loading/error overlay -->
+    <div id="overlay">
+        <div class="spinner" id="overlay-spinner"></div>
+        <div id="overlay-text">Initializing Secure Connection...</div>
+    </div>
+
+    <header>
+        <div>
+            <div class="header-title" id="header-title">Assistant</div>
+            <div class="header-subtitle" id="header-machine-id">Connecting...</div>
+        </div>
+    </header>
+
+    <div id="chat-container">
+        <!-- Messages will be injected here -->
+        
+        <!-- Typing indicator -->
+        <div class="typing-indicator" id="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <div class="input-area">
+        <form id="chat-form">
+            <input type="text" id="chat-input" placeholder="Ask a question..." autocomplete="off" disabled>
+            <button type="submit" id="send-btn" disabled>
+                <!-- Send Icon -->
+                <svg viewBox="0 0 24 24">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                </svg>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const machineId = urlParams.get('machine');
+        
+        const overlay = document.getElementById('overlay');
+        const overlayText = document.getElementById('overlay-text');
+        const overlaySpinner = document.getElementById('overlay-spinner');
+        
+        const headerTitle = document.getElementById('header-title');
+        const headerMachineId = document.getElementById('header-machine-id');
+        
+        const chatContainer = document.getElementById('chat-container');
+        const typingIndicator = document.getElementById('typing-indicator');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        let isInitialized = false;
+
+        // Auto-scroll to bottom
+        function scrollToBottom() {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Add a message bubble to the chat
+        function addMessage(text, sender = 'user', sourceSnippet = null) {
+            const div = document.createElement('div');
+            div.className = `message ${sender}`;
+            
+            // basic escape to prevent XSS
+            const escapedText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            div.innerHTML = escapedText;
+
+            if (sourceSnippet && sender === 'ai') {
+                const span = document.createElement('span');
+                span.className = 'source-snippet';
+                span.innerText = "Source: " + (sourceSnippet.length > 80 ? sourceSnippet.substring(0, 80) + '...' : sourceSnippet);
+                div.appendChild(span);
+            }
+
+            // Insert right before the typing indicator
+            chatContainer.insertBefore(div, typingIndicator);
+            scrollToBottom();
+        }
+
+        // Handle fatal errors (like invalid QR code)
+        function showFatalError(message) {
+            overlaySpinner.style.display = 'none';
+            overlayText.innerHTML = `<span style="color: var(--error-color); font-weight: 500;">Error:</span> ${message}`;
+            overlayText.style.color = 'white';
+        }
+
+        // Initialize: Fetch machine config
+        async function initialize() {
+            if (!machineId) {
+                showFatalError("No machine ID provided in the URL.<br><br>Please scan a valid QR code.");
+                return;
+            }
+
+            headerMachineId.innerText = `Machine ID: ${machineId}`;
+
+            try {
+                const response = await fetch(`/api/machine/${machineId}/config`);
+                if (!response.ok) {
+                    if (response.status === 404) throw new Error(`Machine '${machineId}' not found in database.`);
+                    throw new Error("Failed to connect to the server.");
+                }
+                
+                const data = await response.json();
+                
+                // Success
+                headerTitle.innerText = `Chatting with: ${data.name || machineId} Assistant`;
+                
+                // Hide overlay and enable inputs
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.style.display = 'none', 300);
+                
+                chatInput.disabled = false;
+                sendBtn.disabled = false;
+                isInitialized = true;
+                
+                // Welcome message
+                addMessage(`Hi! I am the AI assistant for the **${data.name}**. What do you need help with?`, 'ai');
+
+            } catch (error) {
+                showFatalError(error.message);
+            }
+        }
+
+        // Handle form submission
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!isInitialized) return;
+
+            const question = chatInput.value.trim();
+            if (!question) return;
+
+            // UI updates
+            chatInput.value = '';
+            chatInput.disabled = true;
+            sendBtn.disabled = true;
+            
+            addMessage(question, 'user');
+            
+            typingIndicator.style.display = 'flex';
+            scrollToBottom();
+
+            // API Call
+            try {
+                const response = await fetch(`/api/machine/${machineId}/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+
+                const data = await response.json();
+                
+                typingIndicator.style.display = 'none';
+                addMessage(data.answer, 'ai', data.source_snippet);
+
+            } catch (error) {
+                typingIndicator.style.display = 'none';
+                addMessage("Failed to send message. Please check your connection and try again.", 'error');
+            } finally {
+                chatInput.disabled = false;
+                sendBtn.disabled = false;
+                // Refocus input if not on mobile (on mobile it forces keyboard up, which is annoying)
+                if (window.innerWidth > 768) {
+                    chatInput.focus();
+                }
+            }
+        });
+
+        // Start initialization on load
+        window.addEventListener('DOMContentLoaded', initialize);
+
+    </script>
+</body>
+</html>

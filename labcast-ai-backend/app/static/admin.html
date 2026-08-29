@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LabCast AI - Admin Dashboard</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 2rem; max-width: 1000px; margin: 0 auto; background: #f9fafb; }
+        .container { display: flex; gap: 2rem; }
+        .list-panel, .edit-panel { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .list-panel { flex: 1; }
+        .edit-panel { flex: 2; display: none; }
+        .machine-item { padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 4px; margin-bottom: 0.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .machine-item:hover { background: #f3f4f6; }
+        .machine-item.active { border-color: #3b82f6; background: #eff6ff; }
+        .emergency-badge { background: #ef4444; color: white; padding: 0.2rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: bold; }
+        h1, h2 { margin-top: 0; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; font-weight: 500; margin-bottom: 0.5rem; }
+        textarea, input { width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px; font-family: inherit; box-sizing: border-box; }
+        textarea { height: 100px; }
+        .sop-list { list-style: none; padding: 0; }
+        .sop-item { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .btn { padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-weight: 500; }
+        .btn-primary { background: #3b82f6; color: white; }
+        .btn-primary:hover { background: #2563eb; }
+        .btn-danger { background: #ef4444; color: white; font-size: 1.2rem; padding: 1rem; width: 100%; margin-top: 1rem; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-secondary { background: #e5e7eb; color: #374151; }
+        .btn-secondary:hover { background: #d1d5db; }
+        .status-message { padding: 1rem; border-radius: 4px; margin-bottom: 1rem; display: none; }
+        .status-success { background: #dcfce7; color: #166534; }
+        .status-error { background: #fee2e2; color: #991b1b; }
+        .emergency-banner { background: #ef4444; color: white; padding: 1rem; text-align: center; font-weight: bold; font-size: 1.5rem; border-radius: 4px; margin-bottom: 1rem; display: none; }
+        
+        /* Auth Styles */
+        #loginOverlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 50; }
+        .login-box { background: white; padding: 2rem; border-radius: 8px; width: 300px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .header-top { display: flex; justify-content: space-between; align-items: center; }
+        .logout-btn { font-size: 0.8rem; padding: 0.25rem 0.5rem; display: none; }
+        .analytics-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; margin-top: 1rem; }
+        .analytics-table th, .analytics-table td { padding: 0.5rem; border-bottom: 1px solid #e5e7eb; }
+        .summary-boxes { display: flex; gap: 1rem; margin-bottom: 1rem; }
+        .summary-box { background: #f3f4f6; padding: 1rem; border-radius: 4px; flex: 1; text-align: center; }
+        .summary-box strong { display: block; font-size: 1.5rem; color: #3b82f6; }
+    </style>
+</head>
+<body>
+    
+    <!-- Login Overlay -->
+    <div id="loginOverlay">
+        <div class="login-box">
+            <h2>Admin Login</h2>
+            <div id="loginError" class="status-message status-error"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" required />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" required />
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%">Login</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="header-top">
+        <h1>LabCast AI Admin</h1>
+        <button type="button" class="btn btn-secondary logout-btn" id="logoutBtn">Logout</button>
+    </div>
+    
+    <div id="statusMessage" class="status-message"></div>
+
+    <div class="container">
+        <div class="list-panel">
+            <h2>Machines</h2>
+            <div id="machineList">Loading machines...</div>
+            
+            <h2 style="margin-top: 2rem;">Upcoming Maintenance</h2>
+            <div id="maintenanceList">Loading maintenance schedule...</div>
+        </div>
+        
+        <div class="edit-panel" id="editPanel">
+            <div id="emergencyBanner" class="emergency-banner">EMERGENCY ACTIVE</div>
+            
+            <h2 id="machineName">Select a Machine</h2>
+            
+            <div class="form-group">
+                <label>Safety Text</label>
+                <textarea id="safetyText"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>SOP Steps</label>
+                <ul id="sopList" class="sop-list"></ul>
+                <button type="button" class="btn btn-secondary" id="addSopBtn">+ Add Step</button>
+            </div>
+            
+            <button type="button" class="btn btn-primary" id="saveBtn">Save Changes</button>
+            
+            <button type="button" class="btn btn-danger" id="emergencyBtn">TOGGLE EMERGENCY</button>
+        </div>
+    </div>
+    
+    <div class="container" style="margin-top: 2rem;">
+        <div class="list-panel" style="flex: 1;">
+            <h2>Analytics & Audit Logs</h2>
+            <div id="analyticsSummary" class="summary-boxes">
+                <div class="summary-box">Loading...</div>
+            </div>
+            
+            <h3>Recent Actions</h3>
+            <table class="analytics-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>User</th>
+                        <th>Action</th>
+                        <th>Target</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody id="auditLogsBody">
+                    <tr><td colspan="5">Loading logs...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="/static/admin.js"></script>
+</body>
+</html>

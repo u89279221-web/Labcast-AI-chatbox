@@ -1,0 +1,38 @@
+services:
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - web
+    restart: unless-stopped
+
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      # Use postgres container host instead of localhost
+      - DATABASE_URL=postgresql://labcast_user:secretpassword@db:5432/labcast_db
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - SECRET_KEY=supersecretkey_change_me_in_production
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=labcast_user
+      - POSTGRES_PASSWORD=secretpassword
+      - POSTGRES_DB=labcast_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
