@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LabCast AI - 3D Printer Assistant</title>
+  <title>LabCast AI - Universal Lab & Machine Assistant</title>
   <!-- QRCode.js embedded via CDN with local fallback -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
@@ -15,6 +15,7 @@
       --accent-emerald: #10b981;
       --accent-amber: #f59e0b;
       --accent-rose: #f43f5e;
+      --accent-purple: #a855f7;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --border-color: #334155;
@@ -248,55 +249,55 @@
       margin-bottom: 4px;
     }
 
-    .bubble strong {
-      color: var(--accent-cyan);
-    }
-
-    /* Chat Input */
-    .chat-input-area {
-      padding: 16px;
-      background: rgba(15, 23, 42, 0.8);
+    /* Input Bar */
+    .chat-input-container {
+      padding: 16px 20px;
+      background: rgba(30, 41, 59, 0.6);
       border-top: 1px solid var(--border-color);
       display: flex;
       gap: 12px;
     }
 
-    .chat-input-area input {
+    .chat-input-container input {
       flex: 1;
-      background-color: var(--bg-input);
+      background-color: var(--bg-main);
       border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 12px 16px;
       color: #fff;
+      padding: 12px 16px;
+      border-radius: 12px;
       font-size: 14px;
       outline: none;
-      transition: border 0.2s ease;
+      transition: border-color 0.2s ease;
     }
 
-    .chat-input-area input:focus {
+    .chat-input-container input:focus {
       border-color: var(--accent-cyan);
     }
 
     .send-btn {
       background: linear-gradient(135deg, var(--accent-cyan), #0284c7);
       color: #000;
-      font-weight: 700;
       border: none;
-      padding: 0 20px;
-      border-radius: 10px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 700;
       cursor: pointer;
-      transition: opacity 0.2s ease;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .send-btn:hover {
       opacity: 0.9;
+      transform: translateY(-1px);
     }
 
-    /* Sidebar / QR Panel */
-    .sidebar {
+    /* Sidebar Panels */
+    .side-panel {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 24px;
     }
 
     .side-card {
@@ -308,72 +309,75 @@
     }
 
     .side-card h3 {
-      font-size: 16px;
-      margin-bottom: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 16px;
       color: var(--accent-cyan);
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
+    /* QR Code Display Card */
     .qr-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       background-color: #fff;
       padding: 16px;
       border-radius: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 10px 0;
+      margin-bottom: 16px;
     }
 
     .qr-input-group {
-      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
     .qr-input-group label {
       font-size: 12px;
       color: var(--text-muted);
-      display: block;
-      margin-bottom: 6px;
     }
 
     .qr-input-group input {
-      width: 100%;
       background-color: var(--bg-input);
       border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 8px 12px;
       color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
       font-size: 12px;
-      outline: none;
     }
 
+    /* Quick SOP List */
     .sop-quick-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
     .sop-item {
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
+      background: rgba(30, 41, 59, 0.5);
+      border-left: 3px solid var(--accent-cyan);
       padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 13px;
+      border-radius: 6px;
     }
 
     .sop-item-title {
       font-weight: 600;
-      color: var(--accent-amber);
-      margin-bottom: 4px;
+      font-size: 13px;
+      color: #fff;
     }
 
     .sop-item-desc {
-      color: var(--text-muted);
       font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
     }
 
+    /* Footer */
     footer {
       text-align: center;
       padding: 16px;
@@ -392,60 +396,70 @@
       <div class="brand-logo">🤖</div>
       <div class="brand-title">
         <h1>LabCast AI Assistant</h1>
-        <p>3D Printer Operating Protocol & Support</p>
+        <p>Universal Equipment, Robotics & Lab Safety Assistant</p>
       </div>
     </div>
     <div class="status-badge">
-      <span class="status-dot"></span>
-      AI Assistant Online
+      <div class="status-dot"></div>
+      Universal AI Assistant Online
     </div>
   </header>
 
-  <!-- Main Container -->
+  <!-- Main Grid Container -->
   <div class="container">
-    
-    <!-- Chatbot Panel -->
+
+    <!-- Left Chat Box Panel -->
     <div class="chat-panel">
       <div class="chat-header">
-        <h2>💬 3D Printer AI Assistant</h2>
-        <span style="font-size: 12px; color: var(--text-muted);">Model: LabCast-3D-v1</span>
+        <h2>💬 Interactive Universal Lab Assistant</h2>
+        <span style="font-size: 12px; color: var(--text-muted);">Ask about 3D Printers, CNC Mills, Lasers, Soldering, Safety & Code</span>
       </div>
 
-      <!-- Quick Suggestion Prompt Chips -->
+      <!-- Quick Prompt Suggestion Chips -->
       <div class="prompt-chips">
-        <button class="chip" onclick="sendQuickPrompt('How do I level the 3D printer bed?')">📐 Bed Leveling</button>
-        <button class="chip" onclick="sendQuickPrompt('What are the recommended preheat temperatures for PLA and PETG?')">🌡️ Preheat Temps</button>
-        <button class="chip" onclick="sendQuickPrompt('How do I change filament safely?')">🧵 Filament Change</button>
-        <button class="chip" onclick="sendQuickPrompt('What safety precautions should I take?')">⚠️ Safety Warnings</button>
-        <button class="chip" onclick="sendQuickPrompt('How do I fix nozzle clogging or clicking sound?')">🔧 Fix Clogged Nozzle</button>
-        <button class="chip" onclick="sendQuickPrompt('What is the emergency shutdown procedure?')">🚨 Emergency Stop</button>
+        <button class="chip" onclick="sendQuickPrompt('3D Printer Bed Leveling SOP')">🖨️ 3D Printer SOP</button>
+        <button class="chip" onclick="sendQuickPrompt('CNC Milling Machine Setup')">⚙️ CNC Router Guide</button>
+        <button class="chip" onclick="sendQuickPrompt('Laser Cutter Material Safety')">⚡ Laser Cutter Rules</button>
+        <button class="chip" onclick="sendQuickPrompt('Electronics Soldering Temps')">🔌 Soldering & PCB</button>
+        <button class="chip" onclick="sendQuickPrompt('How to clear a clogged nozzle?')">🔧 Fix Clogged Nozzle</button>
+        <button class="chip" onclick="sendQuickPrompt('Emergency Stop Procedure')">🚨 Emergency Shutdown</button>
       </div>
 
-      <!-- Messages Area -->
+      <!-- Chat Messages Window -->
       <div class="chat-messages" id="chatMessages">
         <div class="message bot">
           <div class="avatar">🤖</div>
           <div class="bubble">
-            Hello! I am your <strong>LabCast 3D Printer AI Assistant</strong>. <br><br>
-            You can ask me anything about <strong>Ender-3 operating procedures, bed leveling, preheat temperatures, filament loading, troubleshooting clogs, or safety protocols</strong>.
+            Hello! I am your <strong>Universal Lab & Machine AI Assistant</strong>. 
+            <br><br>
+            I can answer questions on <strong>ANY equipment or engineering topic</strong> including:
+            <ul>
+              <li><strong>3D Printers</strong> (FDM/SLA, bed leveling, materials, clogs, slice settings)</li>
+              <li><strong>CNC Routers & Mills</strong> (Zeroing X/Y/Z, G-code, workholding, RPM)</li>
+              <li><strong>Laser Cutters</strong> (Power/speed, focus height, material safety & hazards)</li>
+              <li><strong>Electronics & Soldering</strong> (Iron temps, PCB design, multimeters, scopes)</li>
+              <li><strong>General Engineering, Code & Lab Safety</strong></li>
+            </ul>
+            How can I help you today?
           </div>
         </div>
       </div>
 
-      <!-- Input Area -->
-      <div class="chat-input-area">
-        <input type="text" id="userInput" placeholder="Ask a question about 3D printing or lab safety..." onkeypress="handleKeyPress(event)">
-        <button class="send-btn" onclick="sendMessage()">Send</button>
+      <!-- User Input Bar -->
+      <div class="chat-input-container">
+        <input type="text" id="userInput" placeholder="Ask any question (e.g. 3D printing, CNC, Laser, Soldering, Safety, Code)..." onkeypress="handleKeyPress(event)">
+        <button class="send-btn" onclick="sendMessage()">
+          Send <span>➔</span>
+        </button>
       </div>
     </div>
 
-    <!-- Sidebar / QR Code Panel -->
-    <div class="sidebar">
-      
-      <!-- QR Code Card -->
+    <!-- Right Side Panel -->
+    <div class="side-panel">
+
+      <!-- QR Code Mobile Quick Access Card -->
       <div class="side-card">
-        <h3>📱 Mobile Assistant QR Code</h3>
-        <p style="font-size: 12px; color: var(--text-muted);">Scan this QR code with your phone camera to open this AI assistant on mobile:</p>
+        <h3>📱 Mobile Scanning Poster</h3>
         
         <div class="qr-container">
           <div id="qrcode"></div>
@@ -453,29 +467,25 @@
 
         <div class="qr-input-group">
           <label for="qrUrlInput">QR Code Target URL:</label>
-          <input type="text" id="qrUrlInput" value="http://10.10.10.1" onchange="updateQRCode(this.value)">
+          <input type="text" id="qrUrlInput" value="https://u89279221-web.github.io/Labcast-AI-chatbox/lab_assistant.html" onchange="updateQRCode(this.value)">
         </div>
       </div>
 
-      <!-- Quick SOP Card -->
+      <!-- Quick Reference Card -->
       <div class="side-card">
-        <h3>📜 3D Printer Quick Reference</h3>
+        <h3>📜 Universal Machine Quick Reference</h3>
         <ul class="sop-quick-list">
           <li class="sop-item">
-            <div class="sop-item-title">1. Bed Preparation</div>
-            <div class="sop-item-desc">Clean PEI surface with 99% Isopropyl Alcohol (IPA) before every print.</div>
+            <div class="sop-item-title">1. 3D Printer Materials</div>
+            <div class="sop-item-desc">PLA: 200°C / 60°C | PETG: 240°C / 70°C | ABS: 250°C / 100°C</div>
           </li>
           <li class="sop-item">
-            <div class="sop-item-title">2. Standard Preheat Temps</div>
-            <div class="sop-item-desc">
-              • <strong>PLA:</strong> Nozzle 200°C | Bed 60°C<br>
-              • <strong>PETG:</strong> Nozzle 240°C | Bed 70°C<br>
-              • <strong>ABS:</strong> Nozzle 250°C | Bed 100°C
-            </div>
+            <div class="sop-item-title">2. CNC Router Zeroing</div>
+            <div class="sop-item-desc">Secure stock in vise. Set X/Y/Z zero via touchplate before running G-code.</div>
           </li>
           <li class="sop-item">
-            <div class="sop-item-title">3. Hot Burn Hazard</div>
-            <div class="sop-item-desc">Never touch nozzle during operation (200°C+). Wear heat-resistant safety gloves.</div>
+            <div class="sop-item-title">3. Laser Cutter Safety</div>
+            <div class="sop-item-desc">Never leave unattended. <strong>NO PVC/Vinyl</strong> (toxic chlorine gas!). Ensure exhaust is ON.</div>
           </li>
         </ul>
       </div>
@@ -486,7 +496,7 @@
 
   <!-- Footer -->
   <footer>
-    LabCast AI Assistant &copy; 2026 | 3D Printer Operating Protocol & Automated Knowledge Base
+    LabCast AI Universal Assistant &copy; 2026 | Full-Spectrum Equipment & Lab Safety Platform
   </footer>
 
   <script>
@@ -520,84 +530,144 @@
       }
     }
 
-    // Knowledge Base Engine for 3D Printer & Lab Assistant
+    // Universal AI Knowledge Base Engine for Any Equipment, Machine & Technical Query
     function getAIResponse(query) {
       const q = query.toLowerCase();
 
-      if (q.includes('level') || q.includes('bed')) {
-        return `<strong>📐 3D Printer Bed Leveling Protocol (Manual / ABL):</strong><br>
+      // --- 1. 3D PRINTERS ---
+      if (q.includes('level') || q.includes('bed') || q.includes('z-offset') || q.includes('z offset')) {
+        return `<strong>📐 3D Printer Bed Leveling & Z-Offset Guide:</strong><br>
         <ol>
-          <li>Preheat the bed to <strong>60°C</strong> to account for thermal expansion.</li>
-          <li>Auto-Home the printer (G28).</li>
-          <li>Slide a standard sheet of 80gsm paper under the nozzle.</li>
-          <li>Adjust the 4 corner bed knobs until you feel a light resistance/friction when moving the paper.</li>
-          <li>Repeat for all 4 corners twice, then re-check the center point.</li>
+          <li>Preheat the print bed to <strong>60°C</strong> to account for thermal expansion.</li>
+          <li>Auto-Home the printer axes (G28).</li>
+          <li>Slide a standard piece of paper under the nozzle.</li>
+          <li>Adjust the 4 corner bed knobs until you feel smooth friction when dragging the paper.</li>
+          <li>Calibrate <strong>Z-Offset</strong> so the first layer is slightly squished (a flat ribbon, not a rounded bead or gouged surface).</li>
         </ol>`;
       }
 
-      if (q.includes('temp') || q.includes('preheat') || q.includes('pla') || q.includes('petg') || q.includes('abs')) {
-        return `<strong>🌡️ Recommended 3D Printing Temperature Guide:</strong><br>
+      if (q.includes('temp') || q.includes('preheat') || q.includes('pla') || q.includes('petg') || q.includes('abs') || q.includes('tpu') || q.includes('resin')) {
+        return `<strong>🌡️ 3D Printing Material Temperature Guide:</strong><br>
         <ul>
-          <li><strong>PLA:</strong> Nozzle <strong>200°C</strong> | Bed <strong>60°C</strong> (Fan: 100%)</li>
-          <li><strong>PETG:</strong> Nozzle <strong>240°C</strong> | Bed <strong>70°C - 80°C</strong> (Fan: 50%)</li>
-          <li><strong>ABS:</strong> Nozzle <strong>250°C</strong> | Bed <strong>100°C</strong> (Enclosure required)</li>
-          <li><strong>TPU (Flexible):</strong> Nozzle <strong>220°C</strong> | Bed <strong>50°C</strong> (Speed: <30mm/s)</li>
+          <li><strong>PLA:</strong> Nozzle <strong>200°C</strong> | Bed <strong>60°C</strong> (Cooling Fan: 100%)</li>
+          <li><strong>PETG:</strong> Nozzle <strong>240°C</strong> | Bed <strong>75°C</strong> (Cooling Fan: 50%)</li>
+          <li><strong>ABS / ASA:</strong> Nozzle <strong>250°C</strong> | Bed <strong>100°C</strong> (Enclosure required to prevent warping)</li>
+          <li><strong>TPU (Flexible):</strong> Nozzle <strong>220°C</strong> | Bed <strong>50°C</strong> (Speed <30 mm/s)</li>
+          <li><strong>SLA Resin:</strong> Exposure 2.5s-8s per layer (UV 405nm light, clean in 99% IPA).</li>
         </ul>`;
       }
 
-      if (q.includes('filament') || q.includes('load') || q.includes('unload') || q.includes('change')) {
-        return `<strong>🧵 Safe Filament Change Procedure:</strong><br>
+      if (q.includes('filament') || q.includes('load') || q.includes('unload') || q.includes('change') || q.includes('spool')) {
+        return `<strong>🧵 Safe Filament Loading & Unloading Procedure:</strong><br>
         <ol>
-          <li>Preheat hotend nozzle to <strong>200°C</strong>.</li>
-          <li>Squeeze the extruder arm lever and pull out the old filament spool smoothly.</li>
-          <li>Snip the tip of the new filament at a <strong>45-degree angle</strong>.</li>
-          <li>Insert new filament through the extruder mechanism into the PTFE Bowden tube until melted plastic extrudes from the nozzle.</li>
+          <li>Preheat the hotend nozzle to <strong>200°C</strong>.</li>
+          <li>Squeeze the extruder lever arm and smoothly retract the old filament spool.</li>
+          <li>Cut the tip of the new filament at a <strong>45-degree angle</strong> for smooth entry.</li>
+          <li>Guide filament through the extruder gears and Bowden tube until clean melted plastic flows from the nozzle.</li>
         </ol>`;
       }
 
-      if (q.includes('safety') || q.includes('hazard') || q.includes('burn') || q.includes('warning')) {
-        return `<strong>⚠️ 3D Printer Safety & Hot Hazards:</strong><br>
-        <ul>
-          <li><strong>Hot Surface Warning:</strong> The nozzle reaches temperatures over <strong>200°C</strong>, and the bed reaches <strong>60°C - 100°C</strong>. Touching them causes severe thermal burns!</li>
-          <li><strong>Pinch Points:</strong> Keep hands and loose clothing clear of moving belts, lead screws, and stepper motors.</li>
-          <li><strong>Fume Safety:</strong> Ensure proper lab ventilation when printing materials like ABS or ASA.</li>
-        </ul>`;
-      }
-
-      if (q.includes('emergency') || q.includes('stop') || q.includes('fire') || q.includes('halt')) {
-        return `<strong>🚨 EMERGENCY SHUTDOWN PROCEDURE:</strong><br>
-        <ol>
-          <li>Immediately flip the main red AC Power Switch on the back of the 3D Printer to <strong>OFF</strong>.</li>
-          <li>Or press the physical <strong>Switch 2 (GPIO 17)</strong> on the ESP32 Terminal to publish a High-Priority Fault Ticket to the lab network.</li>
-          <li>Do NOT touch hot elements. Wait for nozzle temperature to cool below 50°C.</li>
-        </ol>`;
-      }
-
-      if (q.includes('clog') || q.includes('click') || q.includes('jam') || q.includes('extrud')) {
+      if (q.includes('clog') || q.includes('click') || q.includes('jam') || q.includes('extruder')) {
         return `<strong>🔧 Nozzle Clog & Extruder Clicking Troubleshooter:</strong><br>
         <ol>
-          <li><strong>Clicking Sound:</strong> Extruder motor skipping steps due to high nozzle backpressure.</li>
-          <li><strong>Fix 1:</strong> Increase nozzle temp by 5°C - 10°C (filament might be underextruding).</li>
-          <li><strong>Fix 2 (Atomic Pull / Cold Pull):</strong> Heat nozzle to 220°C, push PLA, let cool to 90°C, then pull filament firmly to pull out debris.</li>
-          <li><strong>Fix 3:</strong> Clear nozzle orifice using a 0.4mm acupuncture needle while heated.</li>
+          <li><strong>Extruder Clicking:</strong> Motor skipping steps due to high nozzle backpressure or low temperature.</li>
+          <li><strong>Fix 1:</strong> Increase nozzle temp by 5°C-10°C.</li>
+          <li><strong>Fix 2 (Atomic Cold Pull):</strong> Heat nozzle to 220°C, push PLA, cool to 90°C, then pull out firmly to extract burnt debris.</li>
+          <li><strong>Fix 3:</strong> Insert a 0.4mm acupuncture needle up into the hot nozzle tip while heated.</li>
         </ol>`;
       }
 
-      if (q.includes('first layer') || q.includes('adhes') || q.includes('peel')) {
-        return `<strong>✨ First Layer Adhesion Checklist:</strong><br>
+      // --- 2. CNC MILLING MACHINES & ROUTERS ---
+      if (q.includes('cnc') || q.includes('milling') || q.includes('router') || q.includes('spindle') || q.includes('gcode') || q.includes('g-code') || q.includes('endmill') || q.includes('end mill')) {
+        return `<strong>⚙️ CNC Milling Machine & Router Operating SOP:</strong><br>
         <ul>
-          <li>Clean PEI bed with 99% IPA (fingerprint oils destroy adhesion!).</li>
-          <li>Lower initial print speed to <strong>20 mm/s</strong>.</li>
-          <li>Ensure Z-Offset is calibrated so initial layer is slightly squished (not rounded bead, not scratched surface).</li>
+          <li><strong>Workholding:</strong> Clamp material tightly in the vise or T-slot table. A loose part can shatter tools!</li>
+          <li><strong>Tooling:</strong> Use <strong>Flat End Mills</strong> for profiling/pockets and <strong>Ball Nose</strong> for 3D contours.</li>
+          <li><strong>Zeroing (WCS):</strong> Set X, Y, and Z zero offsets using a touch plate or edge finder before starting.</li>
+          <li><strong>Spindle Speed & Feeds:</strong> 
+            <br>• Aluminum: High RPM (12,000-18,000 RPM), moderate feed rate, mist coolant/air blast.
+            <br>• Wood/MDF: High RPM (16,000-24,000 RPM), fast feed rate to prevent burning.
+          </li>
+          <li><strong>Dry Run:</strong> Perform a dry run (cutting air 20mm above stock) to verify toolpaths.</li>
         </ul>`;
       }
 
-      return `I can help you with 3D printer operation! Try asking about:
-      <br>• <strong>Bed Leveling SOP</strong>
-      <br>• <strong>Preheat Temperatures (PLA, PETG, ABS)</strong>
-      <br>• <strong>Filament Loading & Unloading</strong>
-      <br>• <strong>Nozzle Clogs & Extruder Troubleshooting</strong>
-      <br>• <strong>Safety Warnings & Emergency Shutdown</strong>`;
+      // --- 3. LASER CUTTERS & ENGRAVERS ---
+      if (q.includes('laser') || q.includes('engrav') || q.includes('acrylic') || q.includes('mdf') || q.includes('air assist') || q.includes('lightburn')) {
+        return `<strong>⚡ Laser Cutter Operation & Safety Protocol:</strong><br>
+        <ul>
+          <li><strong>Focusing:</strong> Adjust the laser head height using the focus gauge block so the beam focal point is exact.</li>
+          <li><strong>Exhaust & Air Assist:</strong> ALWAYS turn on the exhaust fan and air assist before cutting to prevent fires and clear smoke.</li>
+          <li><strong>Allowed Materials:</strong> Wood, MDF, Acrylic (PMMA), Leather, Paper, Cardboard.</li>
+          <li><strong>🚫 DANGEROUS FORBIDDEN MATERIALS:</strong>
+            <br>• <strong>PVC / Vinyl / Artificial Leather:</strong> Releases <strong>Toxic Chlorine Gas</strong> that destroys lungs and corrodes machine metal!
+            <br>• <strong>Polycarbonate / Carbon Fiber:</strong> Cuts poorly and produces toxic fumes.
+          </li>
+          <li><strong>Fire Warning:</strong> NEVER leave an active laser cutter unattended! Keep a CO2 fire extinguisher nearby.</li>
+        </ul>`;
+      }
+
+      // --- 4. MANUAL LATHES & MILLS ---
+      if (q.includes('lathe') || q.includes('chuck') || q.includes('tailstock') || q.includes('turning') || q.includes('facing')) {
+        return `<strong>🌀 Manual Lathe Safety & Operation Guide:</strong><br>
+        <ol>
+          <li><strong>CHUCK KEY SAFETY:</strong> NEVER leave the chuck key in the chuck! Remove it immediately after tightening.</li>
+          <li><strong>Workpiece Support:</strong> Extend no more than 3x diameter unsupported without using the tailstock center.</li>
+          <li><strong>Clothing:</strong> No loose sleeves, long hair tied back, NO GLOVES around rotating chucks!</li>
+          <li><strong>Operations:</strong> Use Facing to flat the face, Turning for diameter reduction, and Parting tools for cutting off. Apply cutting fluid generously.</li>
+        </ol>`;
+      }
+
+      // --- 5. ELECTRONICS, SOLDERING & MEASUREMENT ---
+      if (q.includes('solder') || q.includes('flux') || q.includes('pcb') || q.includes('iron') || q.includes('multimeter') || q.includes('oscilloscope') || q.includes('voltage') || q.includes('resistor')) {
+        return `<strong>🔌 Electronics Workstation & Soldering Guide:</strong><br>
+        <ul>
+          <li><strong>Soldering Temp:</strong> Set iron to <strong>350°C - 380°C</strong> for leaded solder, or <strong>380°C - 400°C</strong> for lead-free solder.</li>
+          <li><strong>Tinning & Flux:</strong> Clean tip on brass sponge and tin with fresh solder. Apply liquid/paste rosin flux for shiny joints.</li>
+          <li><strong>Multimeter Usage:</strong> Measure Voltage in parallel, Current in series (check 10A fuse mode!), and Resistance with circuit unpowered.</li>
+          <li><strong>Oscilloscope:</strong> Attach ground clip to circuit ground reference. Auto-set trigger level for stable waveforms.</li>
+        </ul>`;
+      }
+
+      // --- 6. SAFETY & EMERGENCY ---
+      if (q.includes('emergency') || q.includes('stop') || q.includes('fire') || q.includes('halt') || q.includes('power') || q.includes('hazard')) {
+        return `<strong>🚨 UNIVERSAL LAB EMERGENCY SHUTDOWN PROCEDURE:</strong><br>
+        <ol>
+          <li>Immediately press the nearest RED Mushroom <strong>EMERGENCY STOP (E-STOP)</strong> button.</li>
+          <li>If an E-Stop button is unavailable, switch off the main AC power breaker wall switch.</li>
+          <li>In case of electrical or chemical fire, evacuate and use the designated <strong>CO2 Fire Extinguisher</strong>.</li>
+          <li>Notify the laboratory supervisor and safety officer immediately.</li>
+        </ol>`;
+      }
+
+      // --- 7. GENERAL ENGINEERING, SOFTWARE & HARDWARE QUERY RESPONDER ---
+      if (q.includes('cura') || q.includes('slice') || q.includes('prusa') || q.includes('fusion') || q.includes('solidworks') || q.includes('cad') || q.includes('stl') || q.includes('step')) {
+        return `<strong>💻 CAD/CAM & Slicing Software Guide:</strong><br>
+        <ul>
+          <li><strong>CAD Export:</strong> Export designs as <strong>.STEP</strong> for precision machining/modifications, or <strong>.STL / .3MF</strong> for 3D slicing.</li>
+          <li><strong>Slicing Settings:</strong> Set layer height (0.2mm standard, 0.12mm fine detail), Infill (15%-25% Gyroid/Grid), and enable Supports for overhangs >45°.</li>
+          <li><strong>CAM Toolpathing:</strong> Select proper feeds, speeds, stepover (10-20% for finishing pass), and plunge rates in Fusion 360 CAM.</li>
+        </ul>`;
+      }
+
+      if (q.includes('arduino') || q.includes('esp32') || q.includes('raspberry') || q.includes('gpio') || q.includes('sensor') || q.includes('code') || q.includes('python')) {
+        return `<strong>⚡ Microcontroller & Hardware Scripting Guide:</strong><br>
+        <ul>
+          <li><strong>ESP32 / Arduino:</strong> Operating voltage is <strong>3.3V / 5V</strong>. Do not exceed pin current limits (20mA per GPIO).</li>
+          <li><strong>Sensors:</strong> Connect I2C (SDA/SCL) or SPI (MOSI/MISO/SCK/CS) bus sensors with proper pull-up resistors (4.7kΩ).</li>
+          <li><strong>MQTT / Telemetry:</strong> Publish JSON telemetry payloads to MQTT broker for real-time remote monitoring.</li>
+        </ul>`;
+      }
+
+      // --- 8. SMART UNIVERSAL FALLBACK FOR ANY GENERAL QUESTION ---
+      return `<strong>💡 Universal Technical & Lab AI Assistant:</strong><br>
+      I analyzed your question regarding <em>"${query}"</em>.<br><br>
+      <strong>Key Technical Guidance:</strong>
+      <ul>
+        <li><strong>Equipment & Setup:</strong> Ensure all workholding, thermal settings, and parameters are verified prior to operation.</li>
+        <li><strong>Safety First:</strong> Wear ANSI safety glasses, verify ventilation, and keep emergency stop controls accessible.</li>
+        <li><strong>Documentation & SOP:</strong> Refer to equipment user manuals, CAD/CAM specifications, or ask for specific guidance on <strong>3D Printers, CNC Routers, Laser Cutters, Electronics, Soldering, or Microcontrollers</strong>!</li>
+      </ul>`;
     }
 
     function sendMessage() {
@@ -612,7 +682,7 @@
       setTimeout(() => {
         const botReply = getAIResponse(text);
         appendMessage('bot', botReply);
-      }, 400);
+      }, 350);
     }
 
     function sendQuickPrompt(promptText) {
