@@ -47,5 +47,5 @@ def generate_styled_qr(url, output_filename, title_text="3D PRINTER AI ASSISTANT
 
 if __name__ == '__main__':
     # 100% Permanent GitHub Pages URL (works on any phone, anywhere, exactly like Google without any IP prompt)
-    generate_styled_qr("https://azizmnadaf26-glitch.github.io/LabCastAI-web/lab_assistant.html", r"lab_chatbot_qr.png")
+    generate_styled_qr("https://u89279221-web.github.io/Labcast-AI-chatbox/lab_assistant.html", r"lab_chatbot_qr.png")
     generate_styled_qr("http://192.168.29.4:8000/lab_assistant.html", r"lab_chatbot_qr_local.png")
