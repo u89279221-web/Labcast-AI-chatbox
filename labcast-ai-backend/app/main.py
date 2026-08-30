@@ -34,7 +34,7 @@ async def lifespan(app: FastAPI):
     Runs on startup and shutdown.
     """
     create_db_and_tables()
-    initialize_embeddings()
+    asyncio.create_task(asyncio.to_thread(initialize_embeddings))
     ws.start_mqtt_bridge(asyncio.get_running_loop())
     yield
 

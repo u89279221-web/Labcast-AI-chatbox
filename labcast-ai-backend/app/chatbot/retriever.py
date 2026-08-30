@@ -17,6 +17,9 @@ class InMemoryRetriever(Retriever):
 
     def _get_model(self):
         if self.model is None:
+            import os
+            os.environ["TOKENIZERS_PARALLELISM"] = "false"
+            os.environ["OMP_NUM_THREADS"] = "1"
             from sentence_transformers import SentenceTransformer
             self.model = SentenceTransformer('all-MiniLM-L6-v2')
         return self.model
