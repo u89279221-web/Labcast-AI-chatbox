@@ -130,7 +130,7 @@
       box-shadow: 0 0 8px var(--accent-emerald);
     }
 
-    /* Main Container (Centered Full-Width ChatGPT / Gemini Style) */
+    /* Main Container */
     .container {
       max-width: 960px;
       width: 100%;
@@ -159,7 +159,7 @@
       overflow: hidden;
     }
 
-    /* Chat Messages Screen */
+    /* Chat Messages Window */
     .chat-messages {
       flex: 1;
       padding: 28px;
@@ -384,13 +384,11 @@
     <div class="chat-panel">
       <!-- Chat Messages Window -->
       <div class="chat-messages" id="chatMessages">
-        <!-- Professional Welcome Message -->
+        <!-- Clean Welcome Message -->
         <div class="message bot">
           <div class="avatar">✨</div>
           <div class="bubble">
             Hello! How can I help you today?
-            <br><br>
-            You can ask me questions on <strong>laboratory equipment, 3D printing, CNC machining, laser safety, electronics, programming, science, mathematics, or general topics.</strong>
           </div>
         </div>
       </div>
@@ -432,33 +430,60 @@
       `;
     }
 
-    // Professional Universal Engine (Clean & Direct Responses)
+    // Direct, Accurate, Natural Response Engine
     async function getAIResponse(query) {
       const q = query.toLowerCase();
 
-      // DuckDuckGo Integration
+      // --- BAMBU LAB 3D PRINTER COST & MODELS ---
+      if (q.includes('bambu') || q.includes('bamboo') || (q.includes('cost') && q.includes('3d printer'))) {
+        return `The price of a <strong>Bambu Lab 3D Printer</strong> depends on the model:
+        <br><br>
+        <ul>
+          <li><strong>Bambu Lab A1 Mini:</strong> <strong>~$299 – $450</strong> (Entry-level high-speed Bedslinger printer, fast 500 mm/s speed).</li>
+          <li><strong>Bambu Lab A1 (Full Size):</strong> <strong>~$399 – $550</strong> (Standard build volume 256×256×256 mm).</li>
+          <li><strong>Bambu Lab P1P:</strong> <strong>~$599</strong> (Open CoreXY high-speed printer).</li>
+          <li><strong>Bambu Lab P1S:</strong> <strong>~$699 – $949</strong> (Fully enclosed CoreXY, ideal for ABS, PETG, and ASA).</li>
+          <li><strong>Bambu Lab X1-Carbon (X1C):</strong> <strong>~$1,199 – $1,449</strong> (Flagship printer with AI LIDAR inspection, touchscreen, hardened nozzle for Carbon Fiber).</li>
+          <li><strong>AMS (Automatic Material System):</strong> <strong>~$299 – $349</strong> (Add-on module for 4-color multi-material printing).</li>
+        </ul>`;
+      }
+
+      // Wikipedia REST API Search for General Direct Answers
+      try {
+        const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
+        const res = await fetch(wikiUrl);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.extract && data.extract.length > 30) {
+            return `${data.extract}`;
+          }
+        }
+      } catch (err) {}
+
+      // DuckDuckGo Search Fallback
       try {
         const ddgUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
         const res = await fetch(ddgUrl);
         const data = await res.json();
         if (data && data.AbstractText && data.AbstractText.length > 20) {
-          return `<strong>${data.Heading || 'Overview'}:</strong><br><br>${data.AbstractText}<br><br><small style="color: var(--text-muted);">Source: ${data.AbstractSource || 'Knowledge Reference'}</small>`;
+          return `${data.AbstractText}`;
         }
       } catch (err) {}
 
-      // 3D Printers
+      // 3D Printers - Leveling & Z-Offset
       if (q.includes('level') || q.includes('bed') || q.includes('z-offset') || q.includes('z offset')) {
-        return `<strong>3D Printer Bed Leveling & Z-Offset Procedure:</strong><br>
+        return `To level a 3D printer bed and set the Z-Offset:
         <ol>
-          <li>Preheat the print bed to <strong>60°C</strong> to account for thermal expansion.</li>
+          <li>Preheat the print bed to <strong>60°C</strong> for thermal expansion.</li>
           <li>Auto-Home all axes (G28).</li>
-          <li>Slide a standard sheet of paper under the nozzle and adjust corner knobs until light friction is felt.</li>
-          <li>Calibrate Z-Offset so the first layer compresses into a smooth, flat ribbon without scratching the bed.</li>
+          <li>Slide paper under the nozzle and adjust corner knobs until light friction is felt.</li>
+          <li>Calibrate Z-Offset so the first layer compresses into a smooth ribbon without scratching the bed.</li>
         </ol>`;
       }
 
+      // 3D Printer Temperatures
       if (q.includes('temp') || q.includes('pla') || q.includes('petg') || q.includes('abs') || q.includes('tpu')) {
-        return `<strong>3D Printing Material Temperature Guidelines:</strong><br>
+        return `Recommended printing temperatures:
         <ul>
           <li><strong>PLA:</strong> Nozzle <strong>200°C</strong> | Bed <strong>60°C</strong></li>
           <li><strong>PETG:</strong> Nozzle <strong>240°C</strong> | Bed <strong>75°C</strong></li>
@@ -467,72 +492,64 @@
         </ul>`;
       }
 
+      // Extruder Clogs
       if (q.includes('clog') || q.includes('click') || q.includes('extruder')) {
-        return `<strong>Extruder & Nozzle Troubleshooting:</strong><br>
+        return `If your 3D printer extruder is clicking or clogged:
         <ol>
-          <li><strong>Extruder Clicking:</strong> Indicates motor skipping due to excessive backpressure or low nozzle temperature. Increase temperature by 5°C.</li>
-          <li><strong>Cold Pull:</strong> Heat nozzle to 220°C, push filament through, allow nozzle to cool to 90°C, then pull firmly to extract debris.</li>
-          <li><strong>Needle Clearance:</strong> Insert a 0.4mm nozzle cleaning needle while heated.</li>
+          <li><strong>Increase Nozzle Temp:</strong> Raise temperature by 5°C to reduced filament backpressure.</li>
+          <li><strong>Cold Pull:</strong> Heat nozzle to 220°C, push filament through, allow it to cool to 90°C, then pull firmly outward.</li>
+          <li><strong>Nozzle Needle:</strong> Insert a 0.4mm needle up into the heated nozzle tip to clear debris.</li>
         </ol>`;
       }
 
-      // CNC
+      // CNC Routers & Milling
       if (q.includes('cnc') || q.includes('milling') || q.includes('router') || q.includes('gcode')) {
-        return `<strong>CNC Milling Operating Standards:</strong><br>
+        return `CNC Milling Operating Setup:
         <ul>
-          <li><strong>Workholding:</strong> Secure stock firmly in a machine vise or clamp set to prevent part ejection.</li>
-          <li><strong>Work Coordinate System (WCS):</strong> Zero X, Y, and Z axes using an edge finder or touch plate.</li>
-          <li><strong>Spindle Speed & Feeds:</strong>
-            <br>• Aluminum: 12,000–18,000 RPM with air blast / coolant mist.
-            <br>• Wood/MDF: 16,000–24,000 RPM with high feed rates to avoid burning.
-          </li>
+          <li><strong>Workholding:</strong> Secure stock tightly in a machine vise or clamp set.</li>
+          <li><strong>Zeroing (WCS):</strong> Set X, Y, and Z zero offsets using a touch plate or edge finder.</li>
+          <li><strong>Spindle RPM:</strong> 12,000–18,000 RPM for Aluminum with air blast; 16,000–24,000 RPM for Wood/MDF.</li>
         </ul>`;
       }
 
-      // Laser
+      // Laser Cutters
       if (q.includes('laser') || q.includes('engrav') || q.includes('acrylic') || q.includes('pvc')) {
-        return `<strong>Laser Cutter Safety & Material Guidelines:</strong><br>
+        return `Laser Cutter Operation & Safety:
         <ul>
-          <li><strong>Focal Distance:</strong> Verify laser head height using the focus block before cutting.</li>
-          <li><strong>Exhaust Ventilation:</strong> Ensure air assist and exhaust filtration are active prior to firing.</li>
-          <li><strong>Approved Materials:</strong> Wood, Acrylic (PMMA), Leather, Paper, Cardboard.</li>
-          <li><strong>Forbidden Materials:</strong> Never cut PVC or Vinyl, as thermal decomposition releases toxic chlorine gas that damages lungs and corrodes equipment.</li>
+          <li><strong>Focus Distance:</strong> Adjust focal height using a gauge block before cutting.</li>
+          <li><strong>Exhaust & Air Assist:</strong> Always enable exhaust fans and air assist.</li>
+          <li><strong>Safe Materials:</strong> Wood, Acrylic (PMMA), Leather, Cardboard.</li>
+          <li><strong>Forbidden:</strong> Never cut PVC or Vinyl, as it produces toxic chlorine gas that damages lungs and corrodes metal.</li>
         </ul>`;
       }
 
       // Soldering / Electronics
       if (q.includes('solder') || q.includes('flux') || q.includes('ohm')) {
-        return `<strong>Electronics & Soldering Standards:</strong><br>
+        return `Electronics & Soldering:
         <ul>
-          <li><strong>Iron Temperature:</strong> Set iron to 350°C–380°C for leaded solder, or 380°C–400°C for lead-free solder.</li>
-          <li><strong>Flux Usage:</strong> Apply rosin flux to facilitate heat transfer and prevent oxidation.</li>
+          <li><strong>Iron Temp:</strong> 350°C–380°C for leaded solder | 380°C–400°C for lead-free solder.</li>
+          <li><strong>Flux:</strong> Apply rosin flux to facilitate heat transfer and shiny joints.</li>
           <li><strong>Ohm's Law:</strong> V = I × R (Voltage = Current × Resistance). Power P = V × I.</li>
         </ul>`;
       }
 
-      // Coding
+      // Code Example
       if (q.includes('python') || q.includes('code') || q.includes('c++') || q.includes('arduino') || q.includes('esp32')) {
-        return `<strong>Code Implementation Example:</strong><br>
+        return `Here is a Python code example for serial data handling:
         <div class="code-block">
           <button class="copy-code-btn" onclick="copySnippet(this)">📋 Copy</button>
-# Python Microcontroller Serial & Data Handler
 import time
 
 def process_sensor_data(val):
     return round(val * 0.0976, 2)
 
-print("Status: Active")
+print("Sensor active")
         </div>`;
       }
 
-      // Clean & Professional General Technical Response
-      return `<strong>Summary & Technical Guidance:</strong><br><br>
-      Here are key technical details regarding <strong>"${query}"</strong>:<br><br>
-      <ul>
-        <li><strong>Core Concept:</strong> "${query}" involves fundamental principles in engineering, hardware control, or physical sciences.</li>
-        <li><strong>Operational Guidelines:</strong> Verify system parameters, check connections, and perform clean test runs prior to full operation.</li>
-        <li><strong>Follow-Up:</strong> Feel free to ask specific follow-up questions regarding equipment operating procedures, code implementations, or safety guidelines.</li>
-      </ul>`;
+      // Direct Natural Answer Fallback
+      return `For <strong>"${query}"</strong>:<br><br>
+      Verify operating parameters, ensure proper hardware connections, and test with clean baseline inputs. Feel free to ask any specific follow-up questions!`;
     }
 
     async function sendMessage() {
