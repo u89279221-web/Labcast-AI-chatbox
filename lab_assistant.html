@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LabCast AI - Unified Universal Assistant</title>
-  <!-- QRCode.js embedded via CDN with local fallback -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <title>LabCast AI Assistant</title>
   <style>
     :root {
       --bg-main: #090d16;
@@ -15,9 +13,7 @@
       --accent-cyan: #38bdf8;
       --accent-blue: #2563eb;
       --accent-emerald: #10b981;
-      --accent-amber: #f59e0b;
       --accent-rose: #f43f5e;
-      --accent-purple: #a855f7;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --border-color: #334155;
@@ -41,9 +37,9 @@
 
     /* Header Bar */
     header {
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.95);
       backdrop-filter: blur(12px);
-      padding: 14px 24px;
+      padding: 14px 28px;
       border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
@@ -70,7 +66,7 @@
       font-weight: 800;
       font-size: 20px;
       color: #fff;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
     }
 
     .brand-title h1 {
@@ -96,7 +92,7 @@
       background-color: var(--bg-input);
       border: 1px solid var(--border-color);
       color: var(--text-muted);
-      padding: 6px 14px;
+      padding: 7px 16px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 600;
@@ -117,7 +113,7 @@
       background: rgba(16, 185, 129, 0.12);
       border: 1px solid var(--accent-emerald);
       color: var(--accent-emerald);
-      padding: 6px 12px;
+      padding: 6px 14px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 600;
@@ -134,62 +130,43 @@
       box-shadow: 0 0 8px var(--accent-emerald);
     }
 
-    /* Main Container */
+    /* Main Container (Centered Full-Width ChatGPT / Gemini Style) */
     .container {
-      max-width: 1280px;
+      max-width: 960px;
       width: 100%;
       margin: 0 auto;
       padding: 20px;
-      display: grid;
-      grid-template-columns: 1fr 340px;
-      gap: 20px;
+      display: flex;
+      flex-direction: column;
       flex: 1;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 768px) {
       .container {
-        grid-template-columns: 1fr;
-        padding: 12px;
+        padding: 10px;
       }
     }
 
-    /* Single Unified Chat Panel */
     .chat-panel {
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: 16px;
+      border-radius: 18px;
       display: flex;
       flex-direction: column;
-      height: 740px;
+      height: calc(100vh - 120px);
+      min-height: 640px;
       box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
       overflow: hidden;
-    }
-
-    .chat-header {
-      padding: 14px 20px;
-      background: rgba(15, 23, 42, 0.6);
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .chat-header h2 {
-      font-size: 15px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
     /* Chat Messages Screen */
     .chat-messages {
       flex: 1;
-      padding: 24px;
+      padding: 28px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 22px;
       background-color: var(--bg-chat-area);
       scroll-behavior: smooth;
     }
@@ -198,7 +175,7 @@
       display: flex;
       gap: 14px;
       max-width: 88%;
-      animation: fadeIn 0.25s ease-out;
+      animation: fadeIn 0.2s ease-out;
     }
 
     @keyframes fadeIn {
@@ -238,7 +215,7 @@
     }
 
     .bubble {
-      padding: 14px 18px;
+      padding: 15px 20px;
       border-radius: 16px;
       font-size: 14px;
       line-height: 1.6;
@@ -274,8 +251,8 @@
       background: #090d16;
       border: 1px solid var(--border-color);
       border-radius: 8px;
-      padding: 12px;
-      margin: 10px 0;
+      padding: 14px;
+      margin: 12px 0;
       font-family: 'Consolas', 'Monaco', monospace;
       font-size: 13px;
       color: #38bdf8;
@@ -301,7 +278,7 @@
       color: #000;
     }
 
-    /* Animated Dots for Thinking */
+    /* Animated Typing Dots */
     .typing-dots {
       display: inline-flex;
       align-items: center;
@@ -325,10 +302,10 @@
       40% { transform: scale(1); opacity: 1; }
     }
 
-    /* Single Prompt Input Bar */
+    /* Centered Input Bar */
     .chat-input-container {
-      padding: 16px 20px;
-      background: rgba(15, 23, 42, 0.8);
+      padding: 16px 24px;
+      background: rgba(15, 23, 42, 0.85);
       border-top: 1px solid var(--border-color);
       display: flex;
       gap: 12px;
@@ -339,8 +316,8 @@
       background-color: var(--bg-main);
       border: 1px solid var(--border-color);
       color: #fff;
-      padding: 14px 18px;
-      border-radius: 24px;
+      padding: 14px 20px;
+      border-radius: 28px;
       font-size: 14px;
       outline: none;
       transition: all 0.2s ease;
@@ -348,15 +325,15 @@
 
     .chat-input-container input:focus {
       border-color: var(--accent-cyan);
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.25);
     }
 
     .send-btn {
       background: linear-gradient(135deg, var(--accent-cyan), #0284c7);
       color: #000;
       border: none;
-      padding: 12px 22px;
-      border-radius: 24px;
+      padding: 12px 24px;
+      border-radius: 28px;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -370,65 +347,9 @@
       transform: scale(1.02);
     }
 
-    /* Side Panel */
-    .side-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .side-card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-
-    .side-card h3 {
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 14px;
-      color: var(--accent-cyan);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .qr-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background-color: #fff;
-      padding: 16px;
-      border-radius: 12px;
-      margin-bottom: 14px;
-    }
-
-    .qr-input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .qr-input-group label {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .qr-input-group input {
-      background-color: var(--bg-input);
-      border: 1px solid var(--border-color);
-      color: #fff;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 11px;
-    }
-
     footer {
       text-align: center;
-      padding: 14px;
+      padding: 12px;
       font-size: 11px;
       color: var(--text-muted);
       border-top: 1px solid var(--border-color);
@@ -443,8 +364,8 @@
     <div class="brand">
       <div class="brand-logo">✨</div>
       <div class="brand-title">
-        <h1>LabCast AI Assistant</h1>
-        <p>Single Unified AI Intelligence Engine</p>
+        <h1>LabCast AI</h1>
+        <p>Smart Conversational Assistant</p>
       </div>
     </div>
     <div class="header-actions">
@@ -453,105 +374,49 @@
       </button>
       <div class="status-badge">
         <div class="status-dot"></div>
-        Live AI Connected
+        Online
       </div>
     </div>
   </header>
 
-  <!-- Main Grid Container -->
+  <!-- Main Container -->
   <div class="container">
-
-    <!-- Single Unified Chat Panel -->
     <div class="chat-panel">
-      <div class="chat-header">
-        <h2>✨ Unified AI Intelligence Model</h2>
-        <span style="font-size: 11px; color: var(--text-muted);">Zero Data Saved • Single Model</span>
-      </div>
-
       <!-- Chat Messages Window -->
       <div class="chat-messages" id="chatMessages">
-        <!-- Single Unified Welcome Screen -->
+        <!-- Professional Welcome Message -->
         <div class="message bot">
           <div class="avatar">✨</div>
           <div class="bubble">
-            Hello! I am your <strong>Single Unified AI Assistant</strong>.
+            Hello! How can I help you today?
             <br><br>
-            I am a single, all-in-one AI intelligence engine. You can ask me <strong>ANY question on ANY topic in the world</strong> — whether it's equipment procedures, engineering, programming, science, mathematics, or general daily questions!
-            <br><br>
-            Type your prompt below to start a clean conversation.
+            You can ask me questions on <strong>laboratory equipment, 3D printing, CNC machining, laser safety, electronics, programming, science, mathematics, or general topics.</strong>
           </div>
         </div>
       </div>
 
-      <!-- Single Prompt Input Bar -->
+      <!-- Input Bar -->
       <div class="chat-input-container">
-        <input type="text" id="userInput" placeholder="Ask me ANYTHING..." onkeypress="handleKeyPress(event)">
+        <input type="text" id="userInput" placeholder="Ask a question..." onkeypress="handleKeyPress(event)">
         <button class="send-btn" onclick="sendMessage()">
           Send <span>➔</span>
         </button>
       </div>
     </div>
-
-    <!-- Right Side Panel -->
-    <div class="side-panel">
-
-      <!-- Mobile Scanner Poster Card -->
-      <div class="side-card">
-        <h3>📱 Mobile Scanner Poster</h3>
-        <div class="qr-container">
-          <div id="qrcode"></div>
-        </div>
-        <div class="qr-input-group">
-          <label for="qrUrlInput">QR Code Target URL:</label>
-          <input type="text" id="qrUrlInput" value="https://u89279221-web.github.io/Labcast-AI-chatbox/lab_assistant.html" onchange="updateQRCode(this.value)">
-        </div>
-      </div>
-
-    </div>
-
   </div>
 
   <!-- Footer -->
   <footer>
-    LabCast AI Assistant &copy; 2026 | Unified AI Engine
+    LabCast AI Assistant &copy; 2026
   </footer>
 
   <script>
-    // Enforce Zero Local Storage
+    // Enforce Zero Saved History
     function enforceZeroStorage() {
       try {
         localStorage.clear();
         sessionStorage.clear();
       } catch (e) {}
-    }
-
-    let qrGenerator = null;
-
-    function initQRCode() {
-      const targetUrl = document.getElementById('qrUrlInput').value || window.location.href;
-      const qrElement = document.getElementById('qrcode');
-      qrElement.innerHTML = '';
-      
-      if (typeof QRCode !== 'undefined') {
-        qrGenerator = new QRCode(qrElement, {
-          text: targetUrl,
-          width: 150,
-          height: 150,
-          colorDark: "#090d16",
-          colorLight: "#ffffff",
-          correctLevel: QRCode.CorrectLevel.H
-        });
-      } else {
-        qrElement.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(targetUrl)}" alt="QR Code">`;
-      }
-    }
-
-    function updateQRCode(newUrl) {
-      if (qrGenerator && typeof qrGenerator.makeCode === 'function') {
-        qrGenerator.makeCode(newUrl);
-      } else {
-        initQRCode();
-      }
     }
 
     function resetChatSession() {
@@ -561,95 +426,112 @@
         <div class="message bot">
           <div class="avatar">✨</div>
           <div class="bubble">
-            Hello! I am your <strong>Single Unified AI Assistant</strong>.
-            <br><br>
-            Session reset cleanly! Ask me ANY question on any topic below.
+            Hello! How can I help you today?
           </div>
         </div>
       `;
     }
 
-    // Single Unified AI Engine (Handles ANY Question)
+    // Professional Universal Engine (Clean & Direct Responses)
     async function getAIResponse(query) {
       const q = query.toLowerCase();
 
-      // DuckDuckGo Knowledge Integration
+      // DuckDuckGo Integration
       try {
         const ddgUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
         const res = await fetch(ddgUrl);
         const data = await res.json();
         if (data && data.AbstractText && data.AbstractText.length > 20) {
-          return `<strong>💡 ${data.Heading || 'Answer'}:</strong><br><br>${data.AbstractText}<br><br><small style="color: var(--text-muted);">Source: ${data.AbstractSource || 'Universal Knowledge Engine'}</small>`;
+          return `<strong>${data.Heading || 'Overview'}:</strong><br><br>${data.AbstractText}<br><br><small style="color: var(--text-muted);">Source: ${data.AbstractSource || 'Knowledge Reference'}</small>`;
         }
       } catch (err) {}
 
       // 3D Printers
       if (q.includes('level') || q.includes('bed') || q.includes('z-offset') || q.includes('z offset')) {
-        return `<strong>📐 3D Printer Bed Leveling & Z-Offset Guide:</strong><br>
+        return `<strong>3D Printer Bed Leveling & Z-Offset Procedure:</strong><br>
         <ol>
-          <li>Preheat the print bed to <strong>60°C</strong>.</li>
+          <li>Preheat the print bed to <strong>60°C</strong> to account for thermal expansion.</li>
           <li>Auto-Home all axes (G28).</li>
-          <li>Slide paper under the nozzle and adjust corner knobs until friction is felt.</li>
-          <li>Calibrate Z-Offset for a flat first-layer ribbon.</li>
+          <li>Slide a standard sheet of paper under the nozzle and adjust corner knobs until light friction is felt.</li>
+          <li>Calibrate Z-Offset so the first layer compresses into a smooth, flat ribbon without scratching the bed.</li>
         </ol>`;
       }
 
       if (q.includes('temp') || q.includes('pla') || q.includes('petg') || q.includes('abs') || q.includes('tpu')) {
-        return `<strong>🌡️ 3D Printing Material Temperature Guide:</strong><br>
+        return `<strong>3D Printing Material Temperature Guidelines:</strong><br>
         <ul>
           <li><strong>PLA:</strong> Nozzle <strong>200°C</strong> | Bed <strong>60°C</strong></li>
           <li><strong>PETG:</strong> Nozzle <strong>240°C</strong> | Bed <strong>75°C</strong></li>
-          <li><strong>ABS:</strong> Nozzle <strong>250°C</strong> | Bed <strong>100°C</strong></li>
-          <li><strong>TPU:</strong> Nozzle <strong>220°C</strong> | Bed <strong>50°C</strong></li>
+          <li><strong>ABS / ASA:</strong> Nozzle <strong>250°C</strong> | Bed <strong>100°C</strong> (Enclosure recommended)</li>
+          <li><strong>TPU (Flexible):</strong> Nozzle <strong>220°C</strong> | Bed <strong>50°C</strong></li>
         </ul>`;
+      }
+
+      if (q.includes('clog') || q.includes('click') || q.includes('extruder')) {
+        return `<strong>Extruder & Nozzle Troubleshooting:</strong><br>
+        <ol>
+          <li><strong>Extruder Clicking:</strong> Indicates motor skipping due to excessive backpressure or low nozzle temperature. Increase temperature by 5°C.</li>
+          <li><strong>Cold Pull:</strong> Heat nozzle to 220°C, push filament through, allow nozzle to cool to 90°C, then pull firmly to extract debris.</li>
+          <li><strong>Needle Clearance:</strong> Insert a 0.4mm nozzle cleaning needle while heated.</li>
+        </ol>`;
       }
 
       // CNC
       if (q.includes('cnc') || q.includes('milling') || q.includes('router') || q.includes('gcode')) {
-        return `<strong>⚙️ CNC Milling Machine Protocol:</strong><br>
+        return `<strong>CNC Milling Operating Standards:</strong><br>
         <ul>
-          <li><strong>Workholding:</strong> Clamp stock tightly in vise.</li>
-          <li><strong>Zeroing (WCS):</strong> Set X, Y, Z zero with touch plate.</li>
-          <li><strong>Spindle Speed:</strong> Aluminum (12,000-18,000 RPM); Wood (16,000-24,000 RPM).</li>
+          <li><strong>Workholding:</strong> Secure stock firmly in a machine vise or clamp set to prevent part ejection.</li>
+          <li><strong>Work Coordinate System (WCS):</strong> Zero X, Y, and Z axes using an edge finder or touch plate.</li>
+          <li><strong>Spindle Speed & Feeds:</strong>
+            <br>• Aluminum: 12,000–18,000 RPM with air blast / coolant mist.
+            <br>• Wood/MDF: 16,000–24,000 RPM with high feed rates to avoid burning.
+          </li>
         </ul>`;
       }
 
       // Laser
       if (q.includes('laser') || q.includes('engrav') || q.includes('acrylic') || q.includes('pvc')) {
-        return `<strong>⚡ Laser Cutter Operation:</strong><br>
+        return `<strong>Laser Cutter Safety & Material Guidelines:</strong><br>
         <ul>
-          <li><strong>Focal Height:</strong> Set laser head focus using gauge block.</li>
-          <li><strong>Exhaust:</strong> ALWAYS turn on exhaust and air assist.</li>
-          <li><strong>🚫 FORBIDDEN:</strong> PVC/Vinyl releases <strong>Toxic Chlorine Gas</strong>!</li>
+          <li><strong>Focal Distance:</strong> Verify laser head height using the focus block before cutting.</li>
+          <li><strong>Exhaust Ventilation:</strong> Ensure air assist and exhaust filtration are active prior to firing.</li>
+          <li><strong>Approved Materials:</strong> Wood, Acrylic (PMMA), Leather, Paper, Cardboard.</li>
+          <li><strong>Forbidden Materials:</strong> Never cut PVC or Vinyl, as thermal decomposition releases toxic chlorine gas that damages lungs and corrodes equipment.</li>
         </ul>`;
       }
 
-      // Soldering
+      // Soldering / Electronics
       if (q.includes('solder') || q.includes('flux') || q.includes('ohm')) {
-        return `<strong>🔌 Electronics & Soldering Guide:</strong><br>
+        return `<strong>Electronics & Soldering Standards:</strong><br>
         <ul>
-          <li><strong>Iron Temp:</strong> <strong>350°C - 380°C</strong> (leaded) | <strong>380°C - 400°C</strong> (lead-free).</li>
-          <li><strong>Ohm's Law:</strong> V = I × R (Voltage = Current × Resistance).</li>
+          <li><strong>Iron Temperature:</strong> Set iron to 350°C–380°C for leaded solder, or 380°C–400°C for lead-free solder.</li>
+          <li><strong>Flux Usage:</strong> Apply rosin flux to facilitate heat transfer and prevent oxidation.</li>
+          <li><strong>Ohm's Law:</strong> V = I × R (Voltage = Current × Resistance). Power P = V × I.</li>
         </ul>`;
       }
 
-      // Code
+      // Coding
       if (q.includes('python') || q.includes('code') || q.includes('c++') || q.includes('arduino') || q.includes('esp32')) {
-        return `<strong>💻 Code Example:</strong><br>
+        return `<strong>Code Implementation Example:</strong><br>
         <div class="code-block">
           <button class="copy-code-btn" onclick="copySnippet(this)">📋 Copy</button>
-# Python Example
-print("Hello from LabCast AI Unified Model!")
+# Python Microcontroller Serial & Data Handler
+import time
+
+def process_sensor_data(val):
+    return round(val * 0.0976, 2)
+
+print("Status: Active")
         </div>`;
       }
 
-      // Single Universal Intelligent Response
-      return `<strong>✨ Unified AI Assistant Response:</strong><br><br>
-      Here is key technical information regarding <strong>"${query}"</strong>:<br><br>
+      // Clean & Professional General Technical Response
+      return `<strong>Summary & Technical Guidance:</strong><br><br>
+      Here are key technical details regarding <strong>"${query}"</strong>:<br><br>
       <ul>
-        <li><strong>Core Concept:</strong> "${query}" relates to technical systems, equipment protocols, or general science principles.</li>
-        <li><strong>Recommended Action:</strong> Follow standard safety precautions, verify operating parameters, and test with clean input values.</li>
-        <li><strong>Further Questions:</strong> You can ask me follow-up questions on <strong>3D Printers, CNC Mills, Laser Cutters, Electronics, Soldering, Code, Math, Physics, or any general topic!</strong></li>
+        <li><strong>Core Concept:</strong> "${query}" involves fundamental principles in engineering, hardware control, or physical sciences.</li>
+        <li><strong>Operational Guidelines:</strong> Verify system parameters, check connections, and perform clean test runs prior to full operation.</li>
+        <li><strong>Follow-Up:</strong> Feel free to ask specific follow-up questions regarding equipment operating procedures, code implementations, or safety guidelines.</li>
       </ul>`;
     }
 
@@ -720,7 +602,7 @@ print("Hello from LabCast AI Unified Model!")
       const codeBlock = btn.parentElement;
       const codeText = codeBlock.innerText.replace("📋 Copy", "").trim();
       navigator.clipboard.writeText(codeText);
-      btn.innerText = "✅ Copied!";
+      btn.innerText = "Copied!";
       setTimeout(() => { btn.innerText = "📋 Copy"; }, 1500);
     }
 
@@ -732,7 +614,6 @@ print("Hello from LabCast AI Unified Model!")
 
     window.addEventListener('DOMContentLoaded', () => {
       enforceZeroStorage();
-      initQRCode();
     });
   </script>
 </body>
