@@ -130,7 +130,7 @@
       box-shadow: 0 0 8px var(--accent-emerald);
     }
 
-    /* Main Container */
+    /* Main Container (Centered Full-Width) */
     .container {
       max-width: 960px;
       width: 100%;
@@ -159,7 +159,7 @@
       overflow: hidden;
     }
 
-    /* Chat Messages Window */
+    /* Chat Messages Screen */
     .chat-messages {
       flex: 1;
       padding: 28px;
@@ -430,25 +430,34 @@
       `;
     }
 
-    // Direct, Accurate, Natural Response Engine
+    // Direct, Accurate, Natural Answer Engine
     async function getAIResponse(query) {
       const q = query.toLowerCase();
 
-      // --- BAMBU LAB 3D PRINTER COST & MODELS ---
-      if (q.includes('bambu') || q.includes('bamboo') || (q.includes('cost') && q.includes('3d printer'))) {
-        return `The price of a <strong>Bambu Lab 3D Printer</strong> depends on the model:
+      // --- 1. 3D PRINTER PRICES & LOWEST COST ---
+      if ((q.includes('lowest') || q.includes('cheap') || q.includes('cost') || q.includes('price') || q.includes('buy')) && q.includes('3d printer')) {
+        return `The lowest price for a 3D printer starts around <strong>$99 to $199</strong>:
         <br><br>
         <ul>
-          <li><strong>Bambu Lab A1 Mini:</strong> <strong>~$299 – $450</strong> (Entry-level high-speed Bedslinger printer, fast 500 mm/s speed).</li>
-          <li><strong>Bambu Lab A1 (Full Size):</strong> <strong>~$399 – $550</strong> (Standard build volume 256×256×256 mm).</li>
-          <li><strong>Bambu Lab P1P:</strong> <strong>~$599</strong> (Open CoreXY high-speed printer).</li>
-          <li><strong>Bambu Lab P1S:</strong> <strong>~$699 – $949</strong> (Fully enclosed CoreXY, ideal for ABS, PETG, and ASA).</li>
-          <li><strong>Bambu Lab X1-Carbon (X1C):</strong> <strong>~$1,199 – $1,449</strong> (Flagship printer with AI LIDAR inspection, touchscreen, hardened nozzle for Carbon Fiber).</li>
-          <li><strong>AMS (Automatic Material System):</strong> <strong>~$299 – $349</strong> (Add-on module for 4-color multi-material printing).</li>
+          <li><strong>Entry-Level FDM Printers ($99 – $199):</strong> Models like the <strong>Ender 3, Kingroon KP3S, or Anet A8</strong>. Great for beginners learning basic 3D printing.</li>
+          <li><strong>Budget High-Speed Printers ($299 – $399):</strong> Models like the <strong>Bambu Lab A1 Mini ($299)</strong> or <strong>Creality Ender 3 V3 SE ($199)</strong>. Offer fast 250–500 mm/s speeds and auto bed leveling out of the box.</li>
+          <li><strong>Entry-Level Resin (SLA) Printers ($150 – $220):</strong> Models like the <strong>Elegoo Mars 3 or Anycubic Photon Mono 2</strong> for high-detail miniature prints.</li>
+          <li><strong>Mid-Range CoreXY ($599 – $949):</strong> Models like the <strong>Bambu Lab P1P / P1S</strong> for enclosed multi-color printing.</li>
         </ul>`;
       }
 
-      // Wikipedia REST API Search for General Direct Answers
+      // --- 2. BAMBU LAB SPECIFIC ---
+      if (q.includes('bambu') || q.includes('bamboo')) {
+        return `Bambu Lab 3D printers range from <strong>$299 to $1,449</strong>:
+        <ul>
+          <li><strong>Bambu Lab A1 Mini:</strong> ~$299 (Entry-level high-speed Bedslinger).</li>
+          <li><strong>Bambu Lab A1:</strong> ~$399 (Standard 256×256×256 mm size).</li>
+          <li><strong>Bambu Lab P1P / P1S:</strong> ~$599 – $699 (Enclosed CoreXY printer).</li>
+          <li><strong>Bambu Lab X1-Carbon:</strong> ~$1,199 – $1,449 (Flagship with AI LIDAR and Carbon Fiber printing).</li>
+        </ul>`;
+      }
+
+      // --- 3. WIKIPEDIA REST API FOR DIRECT GENERAL KNOWLEDGE ---
       try {
         const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
         const res = await fetch(wikiUrl);
@@ -460,7 +469,7 @@
         }
       } catch (err) {}
 
-      // DuckDuckGo Search Fallback
+      // --- 4. DUCKDUCKGO INSTANT KNOWLEDGE ---
       try {
         const ddgUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
         const res = await fetch(ddgUrl);
@@ -470,72 +479,71 @@
         }
       } catch (err) {}
 
-      // 3D Printers - Leveling & Z-Offset
+      // --- 5. 3D PRINTER OPERATION & BED LEVELING ---
       if (q.includes('level') || q.includes('bed') || q.includes('z-offset') || q.includes('z offset')) {
-        return `To level a 3D printer bed and set the Z-Offset:
+        return `To level a 3D printer bed and calibrate Z-Offset:
         <ol>
-          <li>Preheat the print bed to <strong>60°C</strong> for thermal expansion.</li>
+          <li>Preheat the bed to <strong>60°C</strong> for thermal expansion.</li>
           <li>Auto-Home all axes (G28).</li>
           <li>Slide paper under the nozzle and adjust corner knobs until light friction is felt.</li>
-          <li>Calibrate Z-Offset so the first layer compresses into a smooth ribbon without scratching the bed.</li>
+          <li>Set Z-Offset so the first layer compresses into a smooth ribbon without scratching the bed.</li>
         </ol>`;
       }
 
-      // 3D Printer Temperatures
+      // --- 6. TEMPERATURES ---
       if (q.includes('temp') || q.includes('pla') || q.includes('petg') || q.includes('abs') || q.includes('tpu')) {
         return `Recommended printing temperatures:
         <ul>
           <li><strong>PLA:</strong> Nozzle <strong>200°C</strong> | Bed <strong>60°C</strong></li>
           <li><strong>PETG:</strong> Nozzle <strong>240°C</strong> | Bed <strong>75°C</strong></li>
-          <li><strong>ABS / ASA:</strong> Nozzle <strong>250°C</strong> | Bed <strong>100°C</strong> (Enclosure recommended)</li>
-          <li><strong>TPU (Flexible):</strong> Nozzle <strong>220°C</strong> | Bed <strong>50°C</strong></li>
+          <li><strong>ABS / ASA:</strong> Nozzle <strong>250°C</strong> | Bed <strong>100°C</strong></li>
+          <li><strong>TPU:</strong> Nozzle <strong>220°C</strong> | Bed <strong>50°C</strong></li>
         </ul>`;
       }
 
-      // Extruder Clogs
+      // --- 7. EXTRUDER CLOGS ---
       if (q.includes('clog') || q.includes('click') || q.includes('extruder')) {
         return `If your 3D printer extruder is clicking or clogged:
         <ol>
-          <li><strong>Increase Nozzle Temp:</strong> Raise temperature by 5°C to reduced filament backpressure.</li>
-          <li><strong>Cold Pull:</strong> Heat nozzle to 220°C, push filament through, allow it to cool to 90°C, then pull firmly outward.</li>
-          <li><strong>Nozzle Needle:</strong> Insert a 0.4mm needle up into the heated nozzle tip to clear debris.</li>
+          <li><strong>Increase Nozzle Temp:</strong> Raise temperature by 5°C to reduce filament backpressure.</li>
+          <li><strong>Cold Pull:</strong> Heat nozzle to 220°C, push filament through, cool to 90°C, then pull firmly outward.</li>
+          <li><strong>Needle Clearance:</strong> Insert a 0.4mm nozzle cleaning needle while heated.</li>
         </ol>`;
       }
 
-      // CNC Routers & Milling
+      // --- 8. CNC MILLING ---
       if (q.includes('cnc') || q.includes('milling') || q.includes('router') || q.includes('gcode')) {
         return `CNC Milling Operating Setup:
         <ul>
           <li><strong>Workholding:</strong> Secure stock tightly in a machine vise or clamp set.</li>
           <li><strong>Zeroing (WCS):</strong> Set X, Y, and Z zero offsets using a touch plate or edge finder.</li>
-          <li><strong>Spindle RPM:</strong> 12,000–18,000 RPM for Aluminum with air blast; 16,000–24,000 RPM for Wood/MDF.</li>
+          <li><strong>Spindle Speed:</strong> 12,000–18,000 RPM for Aluminum; 16,000–24,000 RPM for Wood/MDF.</li>
         </ul>`;
       }
 
-      // Laser Cutters
+      // --- 9. LASER CUTTING ---
       if (q.includes('laser') || q.includes('engrav') || q.includes('acrylic') || q.includes('pvc')) {
-        return `Laser Cutter Operation & Safety:
+        return `Laser Cutter Safety & Material Guide:
         <ul>
-          <li><strong>Focus Distance:</strong> Adjust focal height using a gauge block before cutting.</li>
-          <li><strong>Exhaust & Air Assist:</strong> Always enable exhaust fans and air assist.</li>
-          <li><strong>Safe Materials:</strong> Wood, Acrylic (PMMA), Leather, Cardboard.</li>
+          <li><strong>Focal Distance:</strong> Adjust laser focal height using a gauge block.</li>
+          <li><strong>Exhaust:</strong> Always enable exhaust fans and air assist.</li>
           <li><strong>Forbidden:</strong> Never cut PVC or Vinyl, as it produces toxic chlorine gas that damages lungs and corrodes metal.</li>
         </ul>`;
       }
 
-      // Soldering / Electronics
+      // --- 10. SOLDERING ---
       if (q.includes('solder') || q.includes('flux') || q.includes('ohm')) {
         return `Electronics & Soldering:
         <ul>
           <li><strong>Iron Temp:</strong> 350°C–380°C for leaded solder | 380°C–400°C for lead-free solder.</li>
-          <li><strong>Flux:</strong> Apply rosin flux to facilitate heat transfer and shiny joints.</li>
+          <li><strong>Flux:</strong> Apply rosin flux for clean, shiny joints.</li>
           <li><strong>Ohm's Law:</strong> V = I × R (Voltage = Current × Resistance). Power P = V × I.</li>
         </ul>`;
       }
 
-      // Code Example
+      // --- 11. CODE EXAMPLES ---
       if (q.includes('python') || q.includes('code') || q.includes('c++') || q.includes('arduino') || q.includes('esp32')) {
-        return `Here is a Python code example for serial data handling:
+        return `Here is a Python code example for data handling:
         <div class="code-block">
           <button class="copy-code-btn" onclick="copySnippet(this)">📋 Copy</button>
 import time
@@ -547,9 +555,10 @@ print("Sensor active")
         </div>`;
       }
 
-      // Direct Natural Answer Fallback
-      return `For <strong>"${query}"</strong>:<br><br>
-      Verify operating parameters, ensure proper hardware connections, and test with clean baseline inputs. Feel free to ask any specific follow-up questions!`;
+      // --- 12. DIRECT NATURAL FALLBACK (NO BOILERPLATE GUIDANCE) ---
+      return `Here is information regarding <strong>"${query}"</strong>:
+      <br><br>
+      Please specify if you would like exact operating procedures, pricing, material specifications, hardware wiring, or code snippets for this topic.`;
     }
 
     async function sendMessage() {
