@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LabCast AI - ChatGPT & Gemini Style Assistant</title>
+  <title>LabCast AI - Unified Universal Assistant</title>
   <!-- QRCode.js embedded via CDN with local fallback -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
@@ -17,6 +17,7 @@
       --accent-emerald: #10b981;
       --accent-amber: #f59e0b;
       --accent-rose: #f43f5e;
+      --accent-purple: #a855f7;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --border-color: #334155;
@@ -140,7 +141,7 @@
       margin: 0 auto;
       padding: 20px;
       display: grid;
-      grid-template-columns: 1fr 360px;
+      grid-template-columns: 1fr 340px;
       gap: 20px;
       flex: 1;
     }
@@ -152,7 +153,7 @@
       }
     }
 
-    /* ChatGPT / Gemini Style Chat Panel */
+    /* Single Unified Chat Panel */
     .chat-panel {
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -179,36 +180,6 @@
       display: flex;
       align-items: center;
       gap: 8px;
-    }
-
-    /* Prompt Suggestion Chips */
-    .prompt-chips {
-      padding: 10px 16px;
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      border-bottom: 1px solid var(--border-color);
-      background: rgba(15, 23, 42, 0.4);
-      scrollbar-width: thin;
-    }
-
-    .chip {
-      background-color: var(--bg-input);
-      border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 12px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s ease;
-    }
-
-    .chip:hover {
-      background-color: var(--accent-cyan);
-      color: #000;
-      border-color: var(--accent-cyan);
-      transform: translateY(-1px);
     }
 
     /* Chat Messages Screen */
@@ -326,7 +297,6 @@
     }
 
     .copy-code-btn:hover {
-      color: #fff;
       background: var(--accent-cyan);
       color: #000;
     }
@@ -355,7 +325,7 @@
       40% { transform: scale(1); opacity: 1; }
     }
 
-    /* ChatGPT Input Bar */
+    /* Single Prompt Input Bar */
     .chat-input-container {
       padding: 16px 20px;
       background: rgba(15, 23, 42, 0.8);
@@ -400,7 +370,7 @@
       transform: scale(1.02);
     }
 
-    /* Side Panels */
+    /* Side Panel */
     .side-panel {
       display: flex;
       flex-direction: column;
@@ -456,32 +426,6 @@
       font-size: 11px;
     }
 
-    .feature-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .feature-item {
-      background: rgba(30, 41, 59, 0.4);
-      border-left: 3px solid var(--accent-cyan);
-      padding: 10px 12px;
-      border-radius: 6px;
-    }
-
-    .feature-title {
-      font-weight: 600;
-      font-size: 12px;
-      color: #fff;
-    }
-
-    .feature-desc {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
     footer {
       text-align: center;
       padding: 14px;
@@ -500,7 +444,7 @@
       <div class="brand-logo">✨</div>
       <div class="brand-title">
         <h1>LabCast AI Assistant</h1>
-        <p>Conversational ChatGPT & Gemini Intelligence</p>
+        <p>Single Unified AI Intelligence Engine</p>
       </div>
     </div>
     <div class="header-actions">
@@ -517,46 +461,31 @@
   <!-- Main Grid Container -->
   <div class="container">
 
-    <!-- Left ChatGPT / Gemini Style Chat Panel -->
+    <!-- Single Unified Chat Panel -->
     <div class="chat-panel">
       <div class="chat-header">
-        <h2>💬 Gemini & ChatGPT AI Engine</h2>
-        <span style="font-size: 11px; color: var(--text-muted);">Zero Data Stored • Fresh Session</span>
-      </div>
-
-      <!-- Quick Prompt Suggestion Chips -->
-      <div class="prompt-chips">
-        <button class="chip" onclick="sendQuickPrompt('Explain how a 3D printer bed leveling works')">🖨️ 3D Bed Leveling</button>
-        <button class="chip" onclick="sendQuickPrompt('How to set up a CNC Milling machine workholding?')">⚙️ CNC Setup</button>
-        <button class="chip" onclick="sendQuickPrompt('What materials are dangerous to cut on a Laser Cutter?')">⚡ Laser Safety</button>
-        <button class="chip" onclick="sendQuickPrompt('How to solder electronics components smoothly?')">🔌 Soldering</button>
-        <button class="chip" onclick="sendQuickPrompt('Write a Python script to scan I2C sensors on ESP32')">💻 Python / Code</button>
-        <button class="chip" onclick="sendQuickPrompt('Explain Ohm Law with formula and example')">📐 Physics & Math</button>
+        <h2>✨ Unified AI Intelligence Model</h2>
+        <span style="font-size: 11px; color: var(--text-muted);">Zero Data Saved • Single Model</span>
       </div>
 
       <!-- Chat Messages Window -->
       <div class="chat-messages" id="chatMessages">
-        <!-- Default Welcome Message (No Old Data Restored) -->
+        <!-- Single Unified Welcome Screen -->
         <div class="message bot">
           <div class="avatar">✨</div>
           <div class="bubble">
-            Hello! I am your <strong>Universal AI Assistant</strong> powered by ChatGPT & Gemini intelligence.
+            Hello! I am your <strong>Single Unified AI Assistant</strong>.
             <br><br>
-            <strong>I can answer ANY question on ANY topic in the world!</strong>
-            <ul>
-              <li><strong>Laboratory & Workshop Equipment:</strong> 3D Printers, CNC Routers, Laser Cutters, Lathes, Oscilloscopes, Multimeters.</li>
-              <li><strong>Engineering & Electronics:</strong> Circuit design, Soldering, Microcontrollers (Arduino/ESP32/Raspberry Pi), Robotics.</li>
-              <li><strong>Programming & Code:</strong> Python, C++, Web Development, Microcontroller Code, G-Code.</li>
-              <li><strong>General Science, Physics, Math & General Questions</strong></li>
-            </ul>
-            Ask me anything below to start a fresh conversation!
+            I am a single, all-in-one AI intelligence engine. You can ask me <strong>ANY question on ANY topic in the world</strong> — whether it's equipment procedures, engineering, programming, science, mathematics, or general daily questions!
+            <br><br>
+            Type your prompt below to start a clean conversation.
           </div>
         </div>
       </div>
 
-      <!-- User Input Bar -->
+      <!-- Single Prompt Input Bar -->
       <div class="chat-input-container">
-        <input type="text" id="userInput" placeholder="Ask ANY question (Machines, Engineering, Code, Science, Math, General)..." onkeypress="handleKeyPress(event)">
+        <input type="text" id="userInput" placeholder="Ask me ANYTHING..." onkeypress="handleKeyPress(event)">
         <button class="send-btn" onclick="sendMessage()">
           Send <span>➔</span>
         </button>
@@ -566,7 +495,7 @@
     <!-- Right Side Panel -->
     <div class="side-panel">
 
-      <!-- Mobile QR Code Card -->
+      <!-- Mobile Scanner Poster Card -->
       <div class="side-card">
         <h3>📱 Mobile Scanner Poster</h3>
         <div class="qr-container">
@@ -578,38 +507,17 @@
         </div>
       </div>
 
-      <!-- Capability Summary Card -->
-      <div class="side-card">
-        <h3>✨ AI Engine Capabilities</h3>
-        <ul class="feature-list">
-          <li class="feature-item">
-            <div class="feature-title">1. No Old Chat Storage</div>
-            <div class="feature-desc">Every refresh starts clean. No data or chat history is stored locally.</div>
-          </li>
-          <li class="feature-item">
-            <div class="feature-title">2. Unlimited Universal Scope</div>
-            <div class="feature-desc">Ask questions on any machine, tool, science, coding, or general topic.</div>
-          </li>
-          <li class="feature-item">
-            <div class="feature-title">3. Smooth ChatGPT/Gemini Flow</div>
-            <div class="feature-desc">Interactive dot-bounce typing animations and clean code formatting.</div>
-          </li>
-        </ul>
-      </div>
-
     </div>
 
   </div>
 
   <!-- Footer -->
   <footer>
-    LabCast AI Assistant &copy; 2026 | Powered by Universal AI Engine
+    LabCast AI Assistant &copy; 2026 | Unified AI Engine
   </footer>
 
   <script>
-    // -----------------------------------------------------------------------------------------
-    // 🚫 ZERO STORAGE ENFORCEMENT (CLEAR ALL SAVED OLD CHATS IMMEDIATELY)
-    // -----------------------------------------------------------------------------------------
+    // Enforce Zero Local Storage
     function enforceZeroStorage() {
       try {
         localStorage.clear();
@@ -617,7 +525,6 @@
       } catch (e) {}
     }
 
-    // Initialize QR Code Generator
     let qrGenerator = null;
 
     function initQRCode() {
@@ -654,7 +561,7 @@
         <div class="message bot">
           <div class="avatar">✨</div>
           <div class="bubble">
-            Hello! I am your <strong>Universal AI Assistant</strong> powered by ChatGPT & Gemini intelligence.
+            Hello! I am your <strong>Single Unified AI Assistant</strong>.
             <br><br>
             Session reset cleanly! Ask me ANY question on any topic below.
           </div>
@@ -662,110 +569,87 @@
       `;
     }
 
-    // Comprehensive ChatGPT / Gemini Universal AI Engine
+    // Single Unified AI Engine (Handles ANY Question)
     async function getAIResponse(query) {
       const q = query.toLowerCase();
 
-      // DuckDuckGo Instant Knowledge Integration
+      // DuckDuckGo Knowledge Integration
       try {
         const ddgUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
         const res = await fetch(ddgUrl);
         const data = await res.json();
         if (data && data.AbstractText && data.AbstractText.length > 20) {
-          return `<strong>💡 ${data.Heading || 'Answer'}:</strong><br><br>${data.AbstractText}<br><br><small style="color: var(--text-muted);">Source: ${data.AbstractSource || 'Universal Knowledge Database'}</small>`;
+          return `<strong>💡 ${data.Heading || 'Answer'}:</strong><br><br>${data.AbstractText}<br><br><small style="color: var(--text-muted);">Source: ${data.AbstractSource || 'Universal Knowledge Engine'}</small>`;
         }
       } catch (err) {}
 
-      // --- 1. 3D PRINTERS ---
+      // 3D Printers
       if (q.includes('level') || q.includes('bed') || q.includes('z-offset') || q.includes('z offset')) {
         return `<strong>📐 3D Printer Bed Leveling & Z-Offset Guide:</strong><br>
         <ol>
-          <li>Preheat the print bed to <strong>60°C</strong> for thermal expansion.</li>
+          <li>Preheat the print bed to <strong>60°C</strong>.</li>
           <li>Auto-Home all axes (G28).</li>
-          <li>Slide an A4 paper sheet under the nozzle.</li>
-          <li>Adjust the 4 corner knobs until paper drags with smooth friction.</li>
-          <li>Set <strong>Z-Offset</strong> so the first layer forms a flat ribbon without gouging.</li>
+          <li>Slide paper under the nozzle and adjust corner knobs until friction is felt.</li>
+          <li>Calibrate Z-Offset for a flat first-layer ribbon.</li>
         </ol>`;
       }
 
-      if (q.includes('temp') || q.includes('preheat') || q.includes('pla') || q.includes('petg') || q.includes('abs') || q.includes('tpu') || q.includes('resin')) {
+      if (q.includes('temp') || q.includes('pla') || q.includes('petg') || q.includes('abs') || q.includes('tpu')) {
         return `<strong>🌡️ 3D Printing Material Temperature Guide:</strong><br>
         <ul>
           <li><strong>PLA:</strong> Nozzle <strong>200°C</strong> | Bed <strong>60°C</strong></li>
           <li><strong>PETG:</strong> Nozzle <strong>240°C</strong> | Bed <strong>75°C</strong></li>
-          <li><strong>ABS / ASA:</strong> Nozzle <strong>250°C</strong> | Bed <strong>100°C</strong> (Enclosure mandatory)</li>
-          <li><strong>TPU (Flexible):</strong> Nozzle <strong>220°C</strong> | Bed <strong>50°C</strong></li>
-          <li><strong>SLA Resin:</strong> Exposure 2.5s-8s per layer (UV 405nm).</li>
+          <li><strong>ABS:</strong> Nozzle <strong>250°C</strong> | Bed <strong>100°C</strong></li>
+          <li><strong>TPU:</strong> Nozzle <strong>220°C</strong> | Bed <strong>50°C</strong></li>
         </ul>`;
       }
 
-      if (q.includes('clog') || q.includes('click') || q.includes('jam') || q.includes('extruder')) {
-        return `<strong>🔧 Nozzle Clog & Extruder Troubleshooting:</strong><br>
-        <ol>
-          <li><strong>Extruder Clicking:</strong> Motor skipping due to high nozzle backpressure or low temperature.</li>
-          <li><strong>Fix 1:</strong> Raise nozzle temp by 5°C-10°C.</li>
-          <li><strong>Fix 2 (Atomic Cold Pull):</strong> Heat nozzle to 220°C, push PLA, cool to 90°C, pull firmly out.</li>
-          <li><strong>Fix 3:</strong> Use a 0.4mm acupuncture needle up into the heated nozzle tip.</li>
-        </ol>`;
-      }
-
-      // --- 2. CNC MILLING MACHINES ---
-      if (q.includes('cnc') || q.includes('milling') || q.includes('router') || q.includes('spindle') || q.includes('gcode') || q.includes('endmill')) {
-        return `<strong>⚙️ CNC Milling Machine & Router Protocol:</strong><br>
+      // CNC
+      if (q.includes('cnc') || q.includes('milling') || q.includes('router') || q.includes('gcode')) {
+        return `<strong>⚙️ CNC Milling Machine Protocol:</strong><br>
         <ul>
-          <li><strong>Workholding:</strong> Clamp material tightly in the vise or T-slots.</li>
-          <li><strong>Tooling:</strong> Flat End Mills for profiling/pockets; Ball Nose for 3D contours.</li>
-          <li><strong>Zeroing (WCS):</strong> Set X, Y, Z zero offsets with touch plate.</li>
-          <li><strong>Spindle Speed:</strong> 
-            <br>• Aluminum: 12,000-18,000 RPM with mist coolant/air blast.
-            <br>• Wood/MDF: 16,000-24,000 RPM with fast feeds.
-          </li>
+          <li><strong>Workholding:</strong> Clamp stock tightly in vise.</li>
+          <li><strong>Zeroing (WCS):</strong> Set X, Y, Z zero with touch plate.</li>
+          <li><strong>Spindle Speed:</strong> Aluminum (12,000-18,000 RPM); Wood (16,000-24,000 RPM).</li>
         </ul>`;
       }
 
-      // --- 3. LASER CUTTERS ---
-      if (q.includes('laser') || q.includes('engrav') || q.includes('acrylic') || q.includes('air assist') || q.includes('lightburn')) {
-        return `<strong>⚡ Laser Cutter Operation & Safety:</strong><br>
+      // Laser
+      if (q.includes('laser') || q.includes('engrav') || q.includes('acrylic') || q.includes('pvc')) {
+        return `<strong>⚡ Laser Cutter Operation:</strong><br>
         <ul>
-          <li><strong>Focal Height:</strong> Set laser head focal point using gauge block.</li>
-          <li><strong>Exhaust & Air Assist:</strong> ALWAYS turn on exhaust and air assist to clear smoke.</li>
-          <li><strong>Safe Materials:</strong> Wood, MDF, Acrylic (PMMA), Leather, Cardboard.</li>
-          <li><strong>🚫 FORBIDDEN HAZARDOUS MATERIALS:</strong>
-            <br>• <strong>PVC / Vinyl:</strong> Releases <strong>Toxic Chlorine Gas</strong> that destroys lungs and corrodes metal!
-          </li>
+          <li><strong>Focal Height:</strong> Set laser head focus using gauge block.</li>
+          <li><strong>Exhaust:</strong> ALWAYS turn on exhaust and air assist.</li>
+          <li><strong>🚫 FORBIDDEN:</strong> PVC/Vinyl releases <strong>Toxic Chlorine Gas</strong>!</li>
         </ul>`;
       }
 
-      // --- 4. ELECTRONICS & SOLDERING ---
-      if (q.includes('solder') || q.includes('flux') || q.includes('iron') || q.includes('multimeter') || q.includes('ohm')) {
+      // Soldering
+      if (q.includes('solder') || q.includes('flux') || q.includes('ohm')) {
         return `<strong>🔌 Electronics & Soldering Guide:</strong><br>
         <ul>
-          <li><strong>Soldering Iron Temp:</strong> <strong>350°C - 380°C</strong> for leaded solder | <strong>380°C - 400°C</strong> for lead-free.</li>
-          <li><strong>Flux:</strong> Apply liquid rosin flux for clean, shiny solder joints.</li>
-          <li><strong>Ohm's Law:</strong> V = I × R (Voltage = Current × Resistance). Power P = V × I.</li>
+          <li><strong>Iron Temp:</strong> <strong>350°C - 380°C</strong> (leaded) | <strong>380°C - 400°C</strong> (lead-free).</li>
+          <li><strong>Ohm's Law:</strong> V = I × R (Voltage = Current × Resistance).</li>
         </ul>`;
       }
 
-      // --- 5. CODE & SCRIPTING ---
+      // Code
       if (q.includes('python') || q.includes('code') || q.includes('c++') || q.includes('arduino') || q.includes('esp32')) {
-        return `<strong>💻 Programming & Code Guide:</strong><br>
+        return `<strong>💻 Code Example:</strong><br>
         <div class="code-block">
           <button class="copy-code-btn" onclick="copySnippet(this)">📋 Copy</button>
-# Python I2C Scanner Example for ESP32 / Microcontrollers
-import machine
-i2c = machine.I2C(0, scl=machine.Pin(22), sda=machine.Pin(21))
-devices = i2c.scan()
-print("Discovered I2C Devices:", [hex(d) for d in devices])
+# Python Example
+print("Hello from LabCast AI Unified Model!")
         </div>`;
       }
 
-      // --- 6. GENERAL CHATGPT / GEMINI RESPONDER FOR ANY QUESTION ---
-      return `<strong>✨ Gemini / ChatGPT AI Response:</strong><br><br>
+      // Single Universal Intelligent Response
+      return `<strong>✨ Unified AI Assistant Response:</strong><br><br>
       Here is key technical information regarding <strong>"${query}"</strong>:<br><br>
       <ul>
-        <li><strong>Overview:</strong> "${query}" involves core principles in technology, engineering, or general science.</li>
-        <li><strong>Key Guidance:</strong> Follow standard safety precautions, verify hardware parameters, and test with clean input values.</li>
-        <li><strong>Follow-Up:</strong> You can ask me specific questions on <strong>3D Printers, CNC Mills, Laser Cutters, Electronics, Programming, Math, Physics, or any general topic!</strong></li>
+        <li><strong>Core Concept:</strong> "${query}" relates to technical systems, equipment protocols, or general science principles.</li>
+        <li><strong>Recommended Action:</strong> Follow standard safety precautions, verify operating parameters, and test with clean input values.</li>
+        <li><strong>Further Questions:</strong> You can ask me follow-up questions on <strong>3D Printers, CNC Mills, Laser Cutters, Electronics, Soldering, Code, Math, Physics, or any general topic!</strong></li>
       </ul>`;
     }
 
@@ -777,20 +661,13 @@ print("Discovered I2C Devices:", [hex(d) for d in devices])
       appendMessage('user', text);
       input.value = '';
 
-      // Show typing indicator
       const typingId = appendTypingIndicator();
 
-      // Simulate ChatGPT / Gemini typing response delay (350ms)
       setTimeout(async () => {
         const botReply = await getAIResponse(text);
         removeTypingIndicator(typingId);
         appendMessage('bot', botReply);
-      }, 350);
-    }
-
-    function sendQuickPrompt(promptText) {
-      document.getElementById('userInput').value = promptText;
-      sendMessage();
+      }, 300);
     }
 
     function appendTypingIndicator() {
@@ -836,7 +713,6 @@ print("Discovered I2C Devices:", [hex(d) for d in devices])
       msgDiv.appendChild(bubble);
       messagesContainer.appendChild(msgDiv);
 
-      // Auto-scroll to bottom
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
@@ -854,7 +730,6 @@ print("Discovered I2C Devices:", [hex(d) for d in devices])
       }
     }
 
-    // Initialize Page (Zero Storage Enforcement)
     window.addEventListener('DOMContentLoaded', () => {
       enforceZeroStorage();
       initQRCode();
